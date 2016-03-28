@@ -13,17 +13,17 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	private Image image, background;
 	private Graphics second;
-	
+
 	private URL base;
 
 	private static Gun gun;
-	
-	//move to gun?
+
+	// move to gun?
 	private static Image gunPic;
-	
+
 	@Override
 	public void init() {
-		
+
 		setSize(640, 512);
 		setBackground(Color.BLUE);
 		setFocusable(true);
@@ -37,29 +37,29 @@ public class Main extends Applet implements Runnable, KeyListener {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+
 		gun = new Gun();
 		gunPic = getImage(base, "data/gun.png");
 		background = getImage(base, "data/background.png");
-		
+
 		Thread thread = new Thread(this);
-		thread.start();		
+		thread.start();
 	}
 
 	@Override
 	public void run() {
-		
-		repaint();
-		
+
 		while (true) {
+			gun.update();
+			repaint();
 			try {
 				Thread.sleep(17);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}			
+			}
 		}
-	}	
-	
+	}
+
 	@Override
 	public void update(Graphics g) {
 		if (image == null) {
@@ -74,12 +74,12 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		g.drawImage(image, 0, 0, this);
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		g.drawImage(gunPic, gun.getCenterX() - 10, gun.getCenterY() - 100, this);
 	}
-	
+
 	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
@@ -91,23 +91,34 @@ public class Main extends Applet implements Runnable, KeyListener {
 		// TODO Auto-generated method stub
 		super.destroy();
 	}
-	
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_LEFT:
+				gun.moveLeft();
+				break;
+	
+			case KeyEvent.VK_RIGHT:
+				gun.moveRight();
+				break;
+	
+			case KeyEvent.VK_SPACE:
+				System.out.println("shoot");
+				break;
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}	
+		gun.moveStop();
+	}
 
 }
