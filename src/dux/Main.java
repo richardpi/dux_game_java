@@ -11,15 +11,16 @@ import java.net.URL;
 
 public class Main extends Applet implements Runnable, KeyListener {
 
-	private Image image, background;
+	private Image image;
 	private Graphics second;
 
 	private URL base;
 
 	private static Gun gun;
+	private static Duck duck;
 
-	// move to gun?
 	private static Image gunPic;
+	private static Image duckPic;
 
 	@Override
 	public void init() {
@@ -40,8 +41,10 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		gun = new Gun();
 		gunPic = getImage(base, "data/gun.png");
-		background = getImage(base, "data/background.png");
 
+		duck = new Duck();
+		duckPic = getImage(base, "data/duck.png");
+		
 		Thread thread = new Thread(this);
 		thread.start();
 	}
@@ -51,6 +54,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		while (true) {
 			gun.update();
+			duck.update();
 			repaint();
 			try {
 				Thread.sleep(17);
@@ -78,6 +82,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 	@Override
 	public void paint(Graphics g) {
 		g.drawImage(gunPic, gun.getCenterX() - 10, gun.getCenterY() - 100, this);
+		g.drawImage(duckPic, duck.getCenterX(), duck.getCenterY(), this);
 	}
 
 	@Override
