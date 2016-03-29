@@ -1,7 +1,11 @@
 package dux;
 
+import java.util.ArrayList;
+
 public class Gun {
 
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	
 	final int MOVESPEED = 5;
 	
 	private int speedX = 0;
@@ -11,6 +15,11 @@ public class Gun {
 	
 	public void update() {
 		centerX += speedX;
+	}
+	
+ 	public void shoot() {
+		Projectile p = new Projectile(centerX, centerY - 130);
+		projectiles.add(p);
 	}
 	
 	public int getCenterX() {
@@ -40,4 +49,8 @@ public class Gun {
 	public void moveStop() {
 		speedX = 0;
 	}
+	
+ 	public ArrayList getProjectiles() {
+		return projectiles;
+	}	
 }

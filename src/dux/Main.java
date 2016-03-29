@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class Main extends Applet implements Runnable, KeyListener {
 
@@ -43,10 +44,14 @@ public class Main extends Applet implements Runnable, KeyListener {
 		gunPic = getImage(base, "data/gun.png");
 
 		duck = new Duck();
-		duckPic = getImage(base, "data/duck.png");
+		duckPic = getImage(base, "data/duck.png");		
+	}
+	
+	@Override
+	public void start() {
 		
 		Thread thread = new Thread(this);
-		thread.start();
+		thread.start();	
 	}
 
 	@Override
@@ -55,6 +60,17 @@ public class Main extends Applet implements Runnable, KeyListener {
 		while (true) {
 			gun.update();
 			duck.update();
+			
+			ArrayList projectiles = gun.getProjectiles();
+			for (int i = 0; i < projectiles.size(); i++) {
+				Projectile p = (Projectile) projectiles.get(i);
+				if (p.isVisible() == true) {
+					p.update();
+				} else {
+					projectiles.remove(i);
+				}
+			}			
+			
 			repaint();
 			try {
 				Thread.sleep(17);
@@ -83,6 +99,13 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 		g.drawImage(gunPic, gun.getCenterX() - 10, gun.getCenterY() - 100, this);
 		g.drawImage(duckPic, duck.getCenterX(), duck.getCenterY(), this);
+		
+		ArrayList projectiles = gun.getProjectiles();
+		for (int i = 0; i < projectiles.size(); i++) {
+			Projectile p = (Projectile) projectiles.get(i);
+			g.setColor(Color.YELLOW);
+			g.fillRect(p.getX(), p.getY(), 5, 15);
+		}
 	}
 
 	@Override
@@ -117,6 +140,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 	
 			case KeyEvent.VK_SPACE:
 				System.out.println("shoot");
+				gun.shoot();
 				break;
 		}
 	}
