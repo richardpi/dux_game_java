@@ -26,7 +26,19 @@ public class Projectile {
 		   visible = false;
 		   r = null;
 		}
+		
+		if (y > 0){
+			checkCollision();
+		}		
 	}
+	
+	private void checkCollision() {
+		if(r.intersects(Main.duck.rect)){
+			visible = false;
+			//destroy or make it not move
+			Main.duck.setCenterX(800);
+		}
+	}	
 
 	public int getX() {
 		return x;

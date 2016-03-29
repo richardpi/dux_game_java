@@ -18,7 +18,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 	private URL base;
 
 	private static Gun gun;
-	private static Duck duck;
+	public static Duck duck;
 
 	private static Image gunPic;
 	private static Image duckPic;
@@ -78,6 +78,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	@Override
@@ -106,6 +107,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 			g.setColor(Color.YELLOW);
 			g.fillRect(p.getX(), p.getY(), 5, 15);
 		}
+		
+		g.drawRect((int)duck.rect.getX(), (int)duck.rect.getY(), (int)duck.rect.getWidth(), (int)duck.rect.getHeight());
 	}
 
 	@Override
