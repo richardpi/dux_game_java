@@ -1,6 +1,11 @@
 package dux;
 
 import java.awt.Rectangle;
+import java.io.File;
+
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.Player;
 
 public class Projectile {
 
@@ -12,7 +17,7 @@ public class Projectile {
 	public Projectile(int startX, int startY) {
 		x = startX;
 		y = startY;
-		speedY = 7;
+		speedY = 3;
 		visible = true;
 		
 		r = new Rectangle(0, 0, 0, 0);
@@ -29,7 +34,7 @@ public class Projectile {
 		
 		if (y > 0){
 			checkCollision();
-		}		
+		}
 	}
 	
 	private void checkCollision() {
@@ -37,6 +42,14 @@ public class Projectile {
 			visible = false;
 			//destroy or make it not move
 			Main.duck.setCenterX(800);
+			
+			try {
+				Player playerHit = Manager.createPlayer(new MediaLocator(new File("data/hit.mp3").toURI().toURL()));
+				playerHit.start();
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+			}
 		}
 	}	
 

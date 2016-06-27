@@ -1,12 +1,17 @@
 package dux;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.Player;
 
 public class Gun {
 
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	
-	final int MOVESPEED = 5;
+	final int MOVESPEED = 2;
 	
 	private int speedX = 0;
 	
@@ -20,6 +25,14 @@ public class Gun {
  	public void shoot() {
 		Projectile p = new Projectile(centerX, centerY - 130);
 		projectiles.add(p);
+		
+		try {
+			Player playerShoot = Manager.createPlayer(new MediaLocator(new File("data/shoot.mp3").toURI().toURL()));
+			playerShoot.start();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 	
 	public int getCenterX() {

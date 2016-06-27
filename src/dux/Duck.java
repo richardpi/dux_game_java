@@ -6,7 +6,7 @@ public class Duck {
 
 	public static Rectangle rect = new Rectangle(0, 0, 0, 0);
 	
-	final int MOVESPEED = 3;
+	final int MOVESPEED = 1;
 	
 	private int speedX = 0;
 	
