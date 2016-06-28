@@ -7,29 +7,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-
-import javax.media.*;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import java.net.*;
 import java.io.*;
 import java.util.*;
-
-import java.io.File;
-
-import javax.media.Format;
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.Player;
-import javax.media.PlugInManager;
-import javax.media.format.AudioFormat;
 
 public class Main extends Applet implements Runnable, KeyListener {
 
@@ -44,6 +26,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 	private static Image gunPic;
 	private static Image duckPic;
 
+	private static Sound sound;
+	
 	@Override
 	public void init() {
 		
@@ -61,28 +45,16 @@ public class Main extends Applet implements Runnable, KeyListener {
 			// TODO: handle exception
 		}
 
+		sound = new Sound();
+		sound.music();
+		
 		gun = new Gun();
 		gunPic = getImage(base, "data/gun.png");
+		gun.setSound(sound);
 
 		duck = new Duck();
 		duckPic = getImage(base, "data/duck.png");
-		
-		Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
-		Format input2 = new AudioFormat(AudioFormat.MPEG);
-		Format output = new AudioFormat(AudioFormat.LINEAR);
-		PlugInManager.addPlugIn(
-			"com.sun.media.codec.audio.mp3.JavaDecoder",
-			new Format[]{input1, input2},
-			new Format[]{output},
-			PlugInManager.CODEC
-		);
-		try {
-			//Player player = Manager.createPlayer(new MediaLocator(new File("data/main.mp3").toURI().toURL()));
-			//player.start();
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-		}
+
 	}
 	
 	@Override
@@ -184,8 +156,10 @@ public class Main extends Applet implements Runnable, KeyListener {
 			break;
 
 		case KeyEvent.VK_SPACE:
-			System.out.println("shoot");
-			gun.shoot();
+			if (gun.isReadyToFire()) {
+				gun.shoot();
+				gun.setReadyToFire(false);
+			}
 			break;
 		}
 	}
@@ -201,8 +175,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 		case KeyEvent.VK_RIGHT:
 			gun.stopRight();
 			break;
+			
+		case KeyEvent.VK_SPACE:
+			gun.setReadyToFire(true);
+			break;
 		}
 		
 	}
-
 }

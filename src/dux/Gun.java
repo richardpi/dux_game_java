@@ -20,22 +20,21 @@ public class Gun {
 	
 	private boolean movingLeft = false;
 	private boolean movingRight = false;
+	private boolean readyToFire = true;
+	
+	private static Sound sound;
 	
 	public void update() {
 		centerX += speedX;
 	}
 	
  	public void shoot() {
-		Projectile p = new Projectile(centerX, centerY - 130);
-		projectiles.add(p);
-		
-		try {
-			Player playerShoot = Manager.createPlayer(new MediaLocator(new File("data/shoot.mp3").toURI().toURL()));
-			playerShoot.start();
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-		}
+ 		if (readyToFire) {
+ 			Projectile p = new Projectile(centerX, centerY - 130);
+ 			projectiles.add(p);
+ 			
+ 			sound.shoot();
+ 		}
 	}
  	
 	public void stopRight() {
@@ -109,6 +108,18 @@ public class Gun {
 
 	public void setMovingLeft(boolean movingLeft) {
 		this.movingLeft = movingLeft;
+	}
+	
+	public void setSound(Sound sound) {
+		this.sound = sound;
+	}
+	
+	public boolean isReadyToFire() {
+		return readyToFire;
+	}
+
+	public void setReadyToFire(boolean readyToFire) {
+		this.readyToFire = readyToFire;
 	}
 
 }
