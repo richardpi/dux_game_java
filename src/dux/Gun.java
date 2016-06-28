@@ -18,6 +18,9 @@ public class Gun {
 	private int centerX = 640/2;
 	private int centerY = 480;
 	
+	private boolean movingLeft = false;
+	private boolean movingRight = false;
+	
 	public void update() {
 		centerX += speedX;
 	}
@@ -33,6 +36,31 @@ public class Gun {
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+ 	
+	public void stopRight() {
+		setMovingRight(false);
+		stop();
+	}
+
+	public void stopLeft() {
+		setMovingLeft(false);
+		stop();
+	}
+
+	private void stop() {
+		if (isMovingRight() == false && isMovingLeft() == false) {
+			speedX = 0;
+		}
+
+		if (isMovingRight() == false && isMovingLeft() == true) {
+			moveLeft();
+		}
+
+		if (isMovingRight() == true && isMovingLeft() == false) {
+			moveRight();
+		}
+
 	}
 	
 	public int getCenterX() {
@@ -65,5 +93,22 @@ public class Gun {
 	
  	public ArrayList getProjectiles() {
 		return projectiles;
-	}	
+	}
+ 	
+	public boolean isMovingRight() {
+		return movingRight;
+	}
+
+	public void setMovingRight(boolean movingRight) {
+		this.movingRight = movingRight;
+	}
+
+	public boolean isMovingLeft() {
+		return movingLeft;
+	}
+
+	public void setMovingLeft(boolean movingLeft) {
+		this.movingLeft = movingLeft;
+	}
+
 }

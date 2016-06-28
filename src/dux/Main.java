@@ -171,24 +171,38 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-				gun.moveLeft();
-				break;
-	
-			case KeyEvent.VK_RIGHT:
-				gun.moveRight();
-				break;
-	
-			case KeyEvent.VK_SPACE:
-				System.out.println("shoot");
-				gun.shoot();
-				break;
+		case KeyEvent.VK_LEFT:
+			gun.moveLeft();
+			gun.setMovingLeft(true);
+			gun.setMovingRight(false);
+			break;
+
+		case KeyEvent.VK_RIGHT:
+			gun.moveRight();
+			gun.setMovingLeft(false);
+			gun.setMovingRight(true);
+			break;
+
+		case KeyEvent.VK_SPACE:
+			System.out.println("shoot");
+			gun.shoot();
+			break;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		gun.moveStop();
+		
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_LEFT:
+			gun.stopLeft();
+			break;
+
+		case KeyEvent.VK_RIGHT:
+			gun.stopRight();
+			break;
+		}
+		
 	}
 
 }
