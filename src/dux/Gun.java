@@ -1,5 +1,6 @@
 package dux;
 
+import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -10,6 +11,8 @@ import javax.media.Player;
 public class Gun {
 
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+
+	private Image gunPic;
 	
 	final int MOVESPEED = 2;
 	
@@ -22,8 +25,6 @@ public class Gun {
 	private boolean movingRight = false;
 	private boolean readyToFire = true;
 	
-	private static Sound sound;
-	
 	public void update() {
 		centerX += speedX;
 	}
@@ -33,7 +34,7 @@ public class Gun {
  			Projectile p = new Projectile(centerX, centerY - 130);
  			projectiles.add(p);
  			
- 			sound.shoot();
+ 			Sound.shoot();
  		}
 	}
  	
@@ -109,17 +110,21 @@ public class Gun {
 	public void setMovingLeft(boolean movingLeft) {
 		this.movingLeft = movingLeft;
 	}
-	
-	public void setSound(Sound sound) {
-		this.sound = sound;
-	}
-	
+
 	public boolean isReadyToFire() {
 		return readyToFire;
 	}
 
 	public void setReadyToFire(boolean readyToFire) {
 		this.readyToFire = readyToFire;
+	}
+	
+	public void setGunPic(Image gunPic) {
+		this.gunPic = gunPic;
+	}
+	
+	public Image getGunPic() {
+		return this.gunPic;
 	}
 
 }

@@ -22,9 +22,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	private static Gun gun;
 	public static ArrayList<Duck> ducks = new ArrayList<Duck>();
-
-	private static Image gunPic;
-
+	
 	private static Sound sound;
 	
 	private int duckCounter = 0;
@@ -47,11 +45,10 @@ public class Main extends Applet implements Runnable, KeyListener {
 		}
 
 		sound = new Sound();
-		sound.music();
+		Sound.music();
 		
 		gun = new Gun();
-		gunPic = getImage(base, "data/gun.png");
-		gun.setSound(sound);
+		gun.setGunPic(getImage(base, "data/gun.png"));;
 		
 		
 		/*
@@ -144,7 +141,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(gunPic, gun.getCenterX() - 10, gun.getCenterY() - 100, this);
+		g.drawImage(gun.getGunPic(), gun.getCenterX() - 10, gun.getCenterY() - 100, this);
 
 		for (int i = 0; i < ducks.size(); i++) {
 			Duck d = (Duck) ducks.get(i);

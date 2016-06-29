@@ -10,25 +10,39 @@ public class Duck {
 	private Image duckPic;
 	
 	final int MOVESPEED = 1;
-	final int INIT_START_X = 790;
+	final int OFFSET_Y = 130;
+	
+	final int DIRECTION_LEFT = -1;
+	final int DIRECTION_RIGHT = 1;
+	
+	final int START_RIGHT = 790;
+	final int START_LEFT = -250;
 	
 	private int speedX = 0;
 	
-	private int centerX = INIT_START_X;
+	private int centerX = START_RIGHT;
 	private int centerY = 10;
 	
 	public void update() {
 		centerX += speedX;
 		
-		if (centerX < -150) {
-			centerX = INIT_START_X;
+		if (centerX < START_LEFT) {
+			centerX = START_LEFT;
+			centerY += OFFSET_Y;
+			speedX = MOVESPEED * DIRECTION_RIGHT;
+		}
+		
+		if (centerX > START_RIGHT) {
+			centerX = START_RIGHT;
+			centerY += OFFSET_Y;
+			speedX = MOVESPEED * DIRECTION_LEFT;			
 		}
 		
 		rect.setRect(centerX + 10, centerY + 5, 120, 120);
 	}
 	
 	public Duck() {
-		speedX = -MOVESPEED;
+		speedX = MOVESPEED * DIRECTION_LEFT;
 	}
 
 	public int getCenterX() {

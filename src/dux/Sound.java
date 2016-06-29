@@ -22,9 +22,9 @@ public class Sound {
 		);
 	}
 	
-	public void music() {
+	public static void music() {
 		try {
-			//Player player = Manager.createPlayer(new MediaLocator(new File("data/main.mp3").toURI().toURL()));
+			Player player = Manager.createPlayer(new MediaLocator(new File("data/main.mp3").toURI().toURL()));
 			//player.start();
 		}
 		catch(Exception ex){
@@ -32,7 +32,7 @@ public class Sound {
 		}
 	}
 	
-	public void shoot() {
+	public static void shoot() {
 		try {
 			Player shootPlayer = Manager.createPlayer(new MediaLocator(new File("data/shoot.mp3").toURI().toURL()));	
 			shootPlayer.start();
