@@ -1,7 +1,9 @@
 package dux;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.media.Manager;
 import javax.media.MediaLocator;
@@ -38,20 +40,20 @@ public class Projectile {
 	}
 	
 	private void checkCollision() {
-		if(r.intersects(Main.duck.rect)){
-			visible = false;
-			//destroy or make it not move
-			Main.duck.setCenterX(800);
+		
+		ArrayList ducks = Main.ducks;
+		for (int i = 0; i < ducks.size(); i++) {
+			Duck d = (Duck) ducks.get(i);
 			
-			try {
-				Player playerHit = Manager.createPlayer(new MediaLocator(new File("data/hit.mp3").toURI().toURL()));
-				playerHit.start();
-			}
-			catch(Exception ex){
-				ex.printStackTrace();
+			if(r.intersects(d.rect)){
+				ducks.remove(i);
+				d = null;
+				
+				Sound.hit();
 			}
 		}
-	}	
+		
+	}
 
 	public int getX() {
 		return x;

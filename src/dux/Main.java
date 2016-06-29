@@ -21,12 +21,13 @@ public class Main extends Applet implements Runnable, KeyListener {
 	private URL base;
 
 	private static Gun gun;
-	public static Duck duck;
+	public static ArrayList<Duck> ducks = new ArrayList<Duck>();
 
 	private static Image gunPic;
-	private static Image duckPic;
 
 	private static Sound sound;
+	
+	private int duckCounter = 0;
 	
 	@Override
 	public void init() {
@@ -51,10 +52,39 @@ public class Main extends Applet implements Runnable, KeyListener {
 		gun = new Gun();
 		gunPic = getImage(base, "data/gun.png");
 		gun.setSound(sound);
+		
+		
+		/*
+		for(int i=0; i < 3; i++) {
+			Duck d = new Duck();
+			d.setDuckPic(getImage(base, "data/duck.png"));
+			ducks.add(d);
+		}
+		*/
+		
+		java.util.Timer t = new java.util.Timer();
+		t.schedule(new TimerTask() {
 
-		duck = new Duck();
-		duckPic = getImage(base, "data/duck.png");
-
+		            @Override
+		            public void run() {
+		                System.out.println("duck added: " + duckCounter);
+		                createDuck();
+		                duckCounter++;
+		                
+		                if (5 <= duckCounter) {
+		                    t.cancel();
+		                    t.purge();
+		                }
+		                
+		            }
+		        }, 1, 800);
+	}
+	
+	private void createDuck()
+	{
+		Duck d = new Duck();
+		d.setDuckPic(getImage(base, "data/duck.png"));
+		ducks.add(d);
 	}
 	
 	@Override
@@ -62,14 +92,20 @@ public class Main extends Applet implements Runnable, KeyListener {
 		
 		Thread thread = new Thread(this);
 		thread.start();	
+		
 	}
 
 	@Override
 	public void run() {
-
+				
 		while (true) {
+
 			gun.update();
-			duck.update();
+			
+			for (int i = 0; i < ducks.size(); i++) {
+				Duck d = (Duck) ducks.get(i);
+				d.update();
+			}
 			
 			ArrayList projectiles = gun.getProjectiles();
 			for (int i = 0; i < projectiles.size(); i++) {
@@ -79,7 +115,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 				} else {
 					projectiles.remove(i);
 				}
-			}			
+			}
 			
 			repaint();
 			try {
@@ -109,7 +145,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 	@Override
 	public void paint(Graphics g) {
 		g.drawImage(gunPic, gun.getCenterX() - 10, gun.getCenterY() - 100, this);
-		g.drawImage(duckPic, duck.getCenterX(), duck.getCenterY(), this);
+
+		for (int i = 0; i < ducks.size(); i++) {
+			Duck d = (Duck) ducks.get(i);
+			g.drawImage(d.getDuckPic(), d.getCenterX(), d.getCenterY(), this);
+		}
 		
 		ArrayList projectiles = gun.getProjectiles();
 		for (int i = 0; i < projectiles.size(); i++) {
@@ -117,8 +157,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 			g.setColor(Color.YELLOW);
 			g.fillRect(p.getX(), p.getY(), 5, 15);
 		}
-		
-		g.drawRect((int)duck.rect.getX(), (int)duck.rect.getY(), (int)duck.rect.getWidth(), (int)duck.rect.getHeight());
+
+		for (int i = 0; i < ducks.size(); i++) {
+			Duck d = (Duck) ducks.get(i);
+			g.drawRect((int)d.rect.getX(), (int)d.rect.getY(), (int)d.rect.getWidth(), (int)d.rect.getHeight());
+		}		
 	}
 
 	@Override

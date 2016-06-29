@@ -41,5 +41,15 @@ public class Sound {
 			ex.printStackTrace();
 		}
 	}
+	
+	public static void hit() {
+		try {
+			Player playerHit = Manager.createPlayer(new MediaLocator(new File("data/hit.mp3").toURI().toURL()));
+			playerHit.start();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
 
 }
