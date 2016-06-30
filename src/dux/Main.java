@@ -30,8 +30,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 	@Override
 	public void init() {
 		
-		setSize(640, 512);
-		setBackground(Color.BLUE);
+		setSize(960, 540);
+		setBackground(new Color(0, 0, 170));
 		setFocusable(true);
 		Frame frame = (Frame) this.getParent().getParent();
 		frame.setTitle("Dux");
@@ -79,8 +79,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 	
 	private void createDuck()
 	{
+		Image duckImage = getImage(base, "data/duck.png");
+		//duckImage.
+		
 		Duck d = new Duck();
-		d.setDuckPic(getImage(base, "data/duck.png"));
+		d.setDuckPic(duckImage);
 		ducks.add(d);
 	}
 	
