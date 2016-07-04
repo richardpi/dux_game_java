@@ -5,7 +5,11 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -15,6 +19,11 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.ImageObserver;
 
 public class Test extends Applet implements Runnable {
 
@@ -25,6 +34,8 @@ public class Test extends Applet implements Runnable {
 	
 	private Duck duck;
 	private Duck duck2;
+	
+	Boolean imageLoaded = false;
 	
 	@Override
 	public void init() {
@@ -56,18 +67,91 @@ public class Test extends Applet implements Runnable {
 	}
 	
 	private Duck createDuckInverse()
-	{
-		//Graphics2D g2D = (Graphics2D) g;	     
-	     
+	{ 
+		
+				
+		ImageObserver myImageObserver = new ImageObserver() {
+
+			public boolean imageUpdate(Image image, int flags, int x, int y, int width, int height) {
+
+				if ((flags & ALLBITS) != 0) {
+
+					imageLoaded = true;
+
+					System.out.println("Image loading finished!");
+
+					return false;
+
+				}
+
+				return true;
+
+			}
+
+		};
+		
+		Image sourceImage = getImage(base, "data/duck.png");
+		sourceImage.getWidth(myImageObserver);
+
+		// We wait until the image is fully loaded
+		try {
+
+			Thread.sleep(500);
+			
+		} catch (InterruptedException e) {
+
+		}
+		
+		/*
+		while (!imageLoaded) {
+
+			try {
+
+				Thread.sleep(100);
+				
+			} catch (InterruptedException e) {
+
+			}
+
+		}
+		*/
+
+	
+		// Create a buffered image from the source image with a format that's
+		// compatible with the screen
+
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+		GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+
+		GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
+
+		// If the source image has no alpha info use Transparency.OPAQUE instead
+
+		BufferedImage img = graphicsConfiguration.createCompatibleImage(sourceImage.getWidth(null), sourceImage.getHeight(null),
+				Transparency.BITMASK);
+
+		// Copy image to buffered image
+
+		Graphics graphics = img.createGraphics();
+
+		// Paint the image onto the buffered image
+
+		graphics.drawImage(sourceImage, 0, 0, null);
+
+		graphics.dispose();
+
+		AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+
+		tx.translate(-img.getWidth(null), 0);
+
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+
+		img = op.filter(img, null);
+		
 		Image duckImage = getImage(base, "data/duck.png");
-		
-		//BufferedImage bufferedImage = toBufferedImage(duckImage);
-		
-		//boolean img = g2D.drawImage(bufferedImage, 0, 0, this);
-		//img = image.getGraphics();
-		
 		Duck d = new Duck();
-		d.setDuckPic(duckImage);
+		d.setDuckPic(img);
 		
 		return d;
 	}
@@ -129,41 +213,6 @@ public class Test extends Applet implements Runnable {
 	public void destroy() {
 		// TODO Auto-generated method stub
 		super.destroy();
-	}
-	
-	public static BufferedImage horizontalflip(BufferedImage img) {  
-        int w = img.getWidth();  
-        int h = img.getHeight();  
-        BufferedImage dimg = new BufferedImage(w, h, img.getType());  
-        Graphics2D g = dimg.createGraphics();  
-        g.drawImage(img, 0, 0, w, h, w, 0, 0, h, null);  
-        g.dispose();  
-        return dimg;  
-    }
-	
-	/**
-	 * Converts a given Image into a BufferedImage
-	 *
-	 * @param img The Image to be converted
-	 * @return The converted BufferedImage
-	 */
-	public static BufferedImage toBufferedImage(Image img)
-	{
-	    if (img instanceof BufferedImage)
-	    {
-	        return (BufferedImage) img;
-	    }
-
-	    // Create a buffered image with transparency
-	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-	    // Draw the image on to the buffered image
-	    Graphics2D bGr = bimage.createGraphics();
-	    bGr.drawImage(img, 0, 0, null);
-	    bGr.dispose();
-
-	    // Return the buffered image
-	    return bimage;
 	}
 
 }
