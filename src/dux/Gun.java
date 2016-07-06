@@ -1,12 +1,7 @@
 package dux;
 
 import java.awt.Image;
-import java.io.File;
 import java.util.ArrayList;
-
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.Player;
 
 public class Gun {
 

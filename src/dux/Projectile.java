@@ -3,6 +3,8 @@ package dux;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import dux.creatures.*;
+
 public class Projectile {
 
 	private int x, y, speedY;
@@ -35,13 +37,13 @@ public class Projectile {
 	
 	private void checkCollision() {
 		
-		ArrayList ducks = Main.ducks;
-		for (int i = 0; i < ducks.size(); i++) {
-			Duck d = (Duck) ducks.get(i);
+		ArrayList creatures = Main.creatures;
+		for (int i = 0; i < creatures.size(); i++) {
+			Creature c = (Creature) creatures.get(i);
 			
-			if(r.intersects(d.rect)){
-				ducks.remove(i);
-				d = null;
+			if(r.intersects(c.rect)){
+				creatures.remove(i);
+				c = null;
 				
 				Sound.hit();
 			}

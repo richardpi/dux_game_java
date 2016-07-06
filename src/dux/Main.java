@@ -11,8 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import java.net.*;
-import java.io.*;
+import dux.creatures.*;
+
 import java.util.*;
 
 public class Main extends Applet implements Runnable, KeyListener {
@@ -21,11 +21,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 	private Graphics second;
 
 	private static Gun gun;
-	public static ArrayList<Duck> ducks = new ArrayList<Duck>();
+	public static ArrayList<Creature> creatures = new ArrayList<Creature>();
 	
 	private static Sound sound;
 	
-	private int duckCounter = 0;
+	private int creatureCounter = 0;
 	
 	@Override
 	public void init() {
@@ -49,11 +49,19 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		            @Override
 		            public void run() {
-		                System.out.println("duck added: " + duckCounter);
-		                createDuck();
-		                duckCounter++;
+		            	
+		                double rand = Math.random() * 1;
+		                if (Math.round(rand) == 1) {
+			                System.out.println("duck added: " + creatureCounter);
+			                createDuck();
+		                } else {
+			                System.out.println("owl added: " + creatureCounter);
+			                createOwl();
+		                }
+
+		                creatureCounter++;
 		                
-		                if (5 <= duckCounter) {
+		                if (10 <= creatureCounter) {
 		                    t.cancel();
 		                    t.purge();
 		                }
@@ -62,15 +70,24 @@ public class Main extends Applet implements Runnable, KeyListener {
 		        }, 1, 300);
 	}
 	
-	private void createDuck()
-	{
+	private void createDuck() {
 		Image duckImageRight = loadImage("data/dux.png");
 		Image duckImageLeft = ImageTools.flipImage(duckImageRight);
 		Duck d = new Duck();
-		d.setDuckRightPic(duckImageRight);
-		d.setDuckLeftPic(duckImageLeft);
+		d.setRightPic(duckImageRight);
+		d.setLeftPic(duckImageLeft);
 		d.init();
-		ducks.add(d);
+		creatures.add(d);
+	}
+	
+	private void createOwl() {
+		Image owlImageRight = loadImage("data/owl.png");
+		Image owlImageLeft = ImageTools.flipImage(owlImageRight);
+		Owl o = new Owl();
+		o.setRightPic(owlImageRight);
+		o.setLeftPic(owlImageLeft);
+		o.init();
+		creatures.add(o);		
 	}
 	
 	@Override
@@ -88,9 +105,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 			gun.update();
 			
-			for (int i = 0; i < ducks.size(); i++) {
-				Duck d = (Duck) ducks.get(i);
-				d.update();
+			for (int i = 0; i < creatures.size(); i++) {
+				Creature c = (Creature) creatures.get(i);
+				c.update();
 			}
 			
 			ArrayList projectiles = gun.getProjectiles();
@@ -132,9 +149,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 		g.drawImage(gun.getGunPic(), gun.getCenterX() - 10, gun.getCenterY() - 100, this);
 
-		for (int i = 0; i < ducks.size(); i++) {
-			Duck d = (Duck) ducks.get(i);
-			g.drawImage(d.getDuckPic(), d.getCenterX(), d.getCenterY(), this);
+		for (int i = 0; i < creatures.size(); i++) {
+			Creature c = (Creature) creatures.get(i);
+			g.drawImage(c.getPic(), c.getCenterX(), c.getCenterY(), this);
 		}
 		
 		ArrayList projectiles = gun.getProjectiles();
@@ -144,9 +161,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 			g.fillRect(p.getX(), p.getY(), 3, 60);
 		}
 
-		for (int i = 0; i < ducks.size(); i++) {
-			Duck d = (Duck) ducks.get(i);
-			g.drawRect((int)d.rect.getX(), (int)d.rect.getY(), (int)d.rect.getWidth(), (int)d.rect.getHeight());
+		for (int i = 0; i < creatures.size(); i++) {
+			Creature c = (Creature) creatures.get(i);
+			g.drawRect((int)c.rect.getX(), (int)c.rect.getY(), (int)c.rect.getWidth(), (int)c.rect.getHeight());
 		}		
 	}
 
@@ -165,7 +182,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

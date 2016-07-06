@@ -1,16 +1,16 @@
-package dux;
+package dux.creatures;
 
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public class Duck {
+public abstract class Creature {
 
 	public Rectangle rect = new Rectangle(0, 0, 0, 0);
 	
-	private Image duckPic;
+	private Image pic;
 	
-	private Image duckLeftPic;
-	private Image duckRightPic;	
+	private Image leftPic;
+	private Image rightPic;	
 	
 	final int MOVESPEED = 1;
 	final int OFFSET_Y = 130;
@@ -33,25 +33,22 @@ public class Duck {
 			centerX = START_LEFT;
 			centerY += OFFSET_Y;
 			speedX = MOVESPEED * DIRECTION_RIGHT;
-			duckPic = duckRightPic;
+			pic = rightPic;
 		}
 		
 		if (centerX > START_RIGHT) {
 			centerX = START_RIGHT;
 			centerY += OFFSET_Y;
 			speedX = MOVESPEED * DIRECTION_LEFT;
-			duckPic = duckLeftPic;
+			pic = leftPic;
 		}
 		
 		rect.setRect(centerX , centerY, 25, 47);
 	}
 	
-	public Duck() {
-	}
-	
 	public void init() {
 		speedX = MOVESPEED * DIRECTION_RIGHT;
-		duckPic = duckRightPic;
+		pic = rightPic;
 		centerX = START_LEFT;
 	}
 
@@ -71,27 +68,27 @@ public class Duck {
 		this.centerY = centerY;
 	}
 
-	public Image getDuckPic() {
-		return duckPic;
+	public Image getPic() {
+		return pic;
 	}
 
-	public void setDuckPic(Image duckPic) {
-		this.duckPic = duckPic;
+	public void setPic(Image pic) {
+		this.pic = pic;
 	}
 
-	public Image getDuckLeftPic() {
-		return duckLeftPic;
+	public Image getLeftPic() {
+		return leftPic;
 	}
 
-	public void setDuckLeftPic(Image duckLeftPic) {
-		this.duckLeftPic = duckLeftPic;
+	public void setLeftPic(Image leftPic) {
+		this.leftPic = leftPic;
 	}
 
-	public Image getDuckRightPic() {
-		return duckRightPic;
+	public Image getRightPic() {
+		return rightPic;
 	}
 
-	public void setDuckRightPic(Image duckRightPic) {
-		this.duckRightPic = duckRightPic;
+	public void setRightPic(Image rightPic) {
+		this.rightPic = rightPic;
 	}
 }
