@@ -1,13 +1,7 @@
 package dux;
 
-import java.awt.Color;
 import java.awt.Rectangle;
-import java.io.File;
 import java.util.ArrayList;
-
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.Player;
 
 public class Projectile {
 
@@ -19,7 +13,7 @@ public class Projectile {
 	public Projectile(int startX, int startY) {
 		x = startX;
 		y = startY;
-		speedY = 3;
+		speedY = 9;
 		visible = true;
 		
 		r = new Rectangle(0, 0, 0, 0);
@@ -27,7 +21,7 @@ public class Projectile {
 
 	public void update() {
 		y -= speedY;
-		r.setBounds(x, y, 5, 15);
+		r.setBounds(x, y, 3, 60);
 		
 		if (y < -20) {
 		   visible = false;

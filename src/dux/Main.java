@@ -42,7 +42,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 		Sound.music();
 		
 		gun = new Gun();
-		gun.setGunPic(loadImage("data/gun.png"));		
+		gun.setGunPic(loadImage("data/gun2.png"));		
 		
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
@@ -140,8 +140,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 		ArrayList projectiles = gun.getProjectiles();
 		for (int i = 0; i < projectiles.size(); i++) {
 			Projectile p = (Projectile) projectiles.get(i);
-			g.setColor(Color.YELLOW);
-			g.fillRect(p.getX(), p.getY(), 5, 15);
+			g.setColor(new Color(238, 238, 238));
+			g.fillRect(p.getX(), p.getY(), 3, 60);
 		}
 
 		for (int i = 0; i < ducks.size(); i++) {

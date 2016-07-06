@@ -15,14 +15,14 @@ public class Gun {
 	private Image gunPic;
 	
 	final static int BORDER_LEFT = 30;
-	final static int BORDER_RIGHT = 800;
+	final static int BORDER_RIGHT = 996;
 	
 	final int MOVESPEED = 2;
 	
 	private int speedX = 0;
 	
-	private int centerX = 960/2;
-	private int centerY = 520;
+	private int centerX = 1024/2;
+	private int centerY = 720;
 	
 	private boolean movingLeft = false;
 	private boolean movingRight = false;
@@ -43,7 +43,7 @@ public class Gun {
 	
  	public void shoot() {
  		if (readyToFire) {
- 			Projectile p = new Projectile(centerX, centerY - 130);
+ 			Projectile p = new Projectile(centerX - 8, centerY - 140);
  			projectiles.add(p);
  			
  			Sound.shoot();
