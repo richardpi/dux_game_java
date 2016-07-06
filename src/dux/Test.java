@@ -9,6 +9,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Transparency;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -68,53 +69,15 @@ public class Test extends Applet implements Runnable {
 	
 	private Duck createDuckInverse()
 	{ 
-		
-				
-		ImageObserver myImageObserver = new ImageObserver() {
-
-			public boolean imageUpdate(Image image, int flags, int x, int y, int width, int height) {
-
-				if ((flags & ALLBITS) != 0) {
-
-					imageLoaded = true;
-
-					System.out.println("Image loading finished!");
-
-					return false;
-
-				}
-
-				return true;
-
-			}
-
-		};
-		
-		Image sourceImage = getImage(base, "data/duck.png");
-		sourceImage.getWidth(myImageObserver);
-
-		// We wait until the image is fully loaded
-		try {
-
-			Thread.sleep(500);
-			
-		} catch (InterruptedException e) {
-
-		}
-		
-		/*
-		while (!imageLoaded) {
-
-			try {
-
-				Thread.sleep(100);
-				
-			} catch (InterruptedException e) {
-
-			}
-
-		}
-		*/
+		 Toolkit toolkit = Toolkit.getDefaultToolkit();
+		 MediaTracker tracker = new MediaTracker(this);
+		 Image sourceImage = toolkit.getImage("data/duck.png");
+		 tracker.addImage(sourceImage, 0);
+		 
+		 try {
+			 tracker.waitForAll();	 
+		 } catch (InterruptedException e) {
+		 }
 
 	
 		// Create a buffered image from the source image with a format that's
@@ -149,7 +112,7 @@ public class Test extends Applet implements Runnable {
 
 		img = op.filter(img, null);
 		
-		Image duckImage = getImage(base, "data/duck.png");
+		//Image duckImage = getImage(base, "data/duck.png");
 		Duck d = new Duck();
 		d.setDuckPic(img);
 		

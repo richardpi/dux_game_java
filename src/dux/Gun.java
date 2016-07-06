@@ -14,18 +14,30 @@ public class Gun {
 
 	private Image gunPic;
 	
+	final static int BORDER_LEFT = 30;
+	final static int BORDER_RIGHT = 800;
+	
 	final int MOVESPEED = 2;
 	
 	private int speedX = 0;
 	
-	private int centerX = 640/2;
-	private int centerY = 480;
+	private int centerX = 960/2;
+	private int centerY = 520;
 	
 	private boolean movingLeft = false;
 	private boolean movingRight = false;
 	private boolean readyToFire = true;
 	
 	public void update() {
+		
+		if (centerX > BORDER_RIGHT) {
+			centerX = BORDER_RIGHT;
+		}
+
+		if (centerX < BORDER_LEFT) {
+			centerX = BORDER_LEFT;
+		}
+		
 		centerX += speedX;
 	}
 	

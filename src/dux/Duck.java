@@ -9,6 +9,9 @@ public class Duck {
 	
 	private Image duckPic;
 	
+	private Image duckLeftPic;
+	private Image duckRightPic;	
+	
 	final int MOVESPEED = 1;
 	final int OFFSET_Y = 130;
 	
@@ -20,7 +23,7 @@ public class Duck {
 	
 	private int speedX = 0;
 	
-	private int centerX = START_RIGHT;
+	private int centerX;
 	private int centerY = 10;
 	
 	public void update() {
@@ -30,19 +33,26 @@ public class Duck {
 			centerX = START_LEFT;
 			centerY += OFFSET_Y;
 			speedX = MOVESPEED * DIRECTION_RIGHT;
+			duckPic = duckRightPic;
 		}
 		
 		if (centerX > START_RIGHT) {
 			centerX = START_RIGHT;
 			centerY += OFFSET_Y;
-			speedX = MOVESPEED * DIRECTION_LEFT;			
+			speedX = MOVESPEED * DIRECTION_LEFT;
+			duckPic = duckLeftPic;
 		}
 		
-		rect.setRect(centerX + 10, centerY + 5, 120, 120);
+		rect.setRect(centerX , centerY, 25, 47);
 	}
 	
 	public Duck() {
-		speedX = MOVESPEED * DIRECTION_LEFT;
+	}
+	
+	public void init() {
+		speedX = MOVESPEED * DIRECTION_RIGHT;
+		duckPic = duckRightPic;
+		centerX = START_LEFT;
 	}
 
 	public int getCenterX() {
@@ -67,5 +77,21 @@ public class Duck {
 
 	public void setDuckPic(Image duckPic) {
 		this.duckPic = duckPic;
+	}
+
+	public Image getDuckLeftPic() {
+		return duckLeftPic;
+	}
+
+	public void setDuckLeftPic(Image duckLeftPic) {
+		this.duckLeftPic = duckLeftPic;
+	}
+
+	public Image getDuckRightPic() {
+		return duckRightPic;
+	}
+
+	public void setDuckRightPic(Image duckRightPic) {
+		this.duckRightPic = duckRightPic;
 	}
 }

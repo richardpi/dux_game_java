@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -18,8 +20,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 	private Image image;
 	private Graphics second;
 
-	private URL base;
-
 	private static Gun gun;
 	public static ArrayList<Duck> ducks = new ArrayList<Duck>();
 	
@@ -30,7 +30,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 	@Override
 	public void init() {
 		
-		setSize(960, 540);
+		setSize(1024, 768);
 		setBackground(new Color(0, 0, 170));
 		setFocusable(true);
 		Frame frame = (Frame) this.getParent().getParent();
@@ -38,26 +38,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		addKeyListener(this);
 
-		try {
-			base = getDocumentBase();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
 		sound = new Sound();
 		Sound.music();
 		
 		gun = new Gun();
-		gun.setGunPic(getImage(base, "data/gun.png"));;
-		
-		
-		/*
-		for(int i=0; i < 3; i++) {
-			Duck d = new Duck();
-			d.setDuckPic(getImage(base, "data/duck.png"));
-			ducks.add(d);
-		}
-		*/
+		gun.setGunPic(loadImage("data/gun.png"));		
 		
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
@@ -74,16 +59,17 @@ public class Main extends Applet implements Runnable, KeyListener {
 		                }
 		                
 		            }
-		        }, 1, 800);
+		        }, 1, 300);
 	}
 	
 	private void createDuck()
 	{
-		Image duckImage = getImage(base, "data/duck.png");
-		//duckImage.
-		
+		Image duckImageRight = loadImage("data/dux.png");
+		Image duckImageLeft = ImageTools.flipImage(duckImageRight);
 		Duck d = new Duck();
-		d.setDuckPic(duckImage);
+		d.setDuckRightPic(duckImageRight);
+		d.setDuckLeftPic(duckImageLeft);
+		d.init();
 		ducks.add(d);
 	}
 	
@@ -193,9 +179,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 			break;
 
 		case KeyEvent.VK_RIGHT:
-			gun.moveRight();
-			gun.setMovingLeft(false);
-			gun.setMovingRight(true);
+				gun.moveRight();
+				gun.setMovingLeft(false);
+				gun.setMovingRight(true);
 			break;
 
 		case KeyEvent.VK_SPACE:
@@ -224,5 +210,19 @@ public class Main extends Applet implements Runnable, KeyListener {
 			break;
 		}
 		
+	}
+
+	private Image loadImage(String path) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		MediaTracker tracker = new MediaTracker(this);
+		Image sourceImage = toolkit.getImage(path);
+		tracker.addImage(sourceImage, 0);
+
+		try {
+			tracker.waitForAll();
+		} catch (InterruptedException e) {
+		}
+
+		return sourceImage;
 	}
 }
