@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import dux.creatures.*;
 
@@ -22,14 +23,14 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	private static Gun gun;
 	public static ArrayList<Creature> creatures = new ArrayList<Creature>();
-	
+
 	private static Sound sound;
-	
+
 	private int creatureCounter = 0;
-	
+
 	@Override
 	public void init() {
-		
+
 		setSize(1024, 768);
 		setBackground(new Color(0, 0, 170));
 		setFocusable(true);
@@ -40,76 +41,85 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		sound = new Sound();
 		Sound.music();
-		
+
 		gun = new Gun();
-		gun.setGunPic(loadImage("data/gun2.png"));		
-		
+		gun.setGunPic(loadImage("data/gun2.png"));
+
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
 
-		            @Override
-		            public void run() {
-		            	
-		                double rand = Math.random() * 1;
-		                if (Math.round(rand) == 1) {
-			                System.out.println("duck added: " + creatureCounter);
-			                createDuck();
-		                } else {
-			                System.out.println("owl added: " + creatureCounter);
-			                createOwl();
-		                }
+			@Override
+			public void run() {
 
-		                creatureCounter++;
-		                
-		                if (10 <= creatureCounter) {
-		                    t.cancel();
-		                    t.purge();
-		                }
-		                
-		            }
-		        }, 1, 300);
+				int rand = new Random().nextInt(3);
+
+				switch (rand) {
+				case 0:
+					System.out.println("duck added: " + creatureCounter);
+					createDuck();
+					break;
+				case 1:
+					System.out.println("owl added: " + creatureCounter);
+					createOwl();
+					break;
+				case 2:
+					System.out.println("rabbit added: " + creatureCounter);
+					createRabbit();
+					break;
+				}
+
+				creatureCounter++;
+
+				if (10 <= creatureCounter) {
+					t.cancel();
+					t.purge();
+				}
+
+			}
+		}, 1, 300);
 	}
-	
+
 	private void createDuck() {
-		Image duckImageRight = loadImage("data/dux.png");
-		Image duckImageLeft = ImageTools.flipImage(duckImageRight);
-		Duck d = new Duck();
-		d.setRightPic(duckImageRight);
-		d.setLeftPic(duckImageLeft);
-		d.init();
-		creatures.add(d);
+		createCreature("data/dux.png", new Duck());
 	}
-	
+
 	private void createOwl() {
-		Image owlImageRight = loadImage("data/owl.png");
-		Image owlImageLeft = ImageTools.flipImage(owlImageRight);
-		Owl o = new Owl();
-		o.setRightPic(owlImageRight);
-		o.setLeftPic(owlImageLeft);
-		o.init();
-		creatures.add(o);		
+		createCreature("data/owl.png", new Owl());
 	}
-	
+
+	private void createRabbit() {
+		createCreature("data/rabbit.png", new Rabbit());
+	}
+
+	private void createCreature(String image, Creature c) {
+		Image imageRight = loadImage(image);
+		Image imageLeft = ImageTools.flipImage(imageRight);
+		c.setRightPic(imageRight);
+		c.setLeftPic(imageLeft);
+		c.init();
+		creatures.add(c);
+	}
+
 	@Override
 	public void start() {
-		
+
 		Thread thread = new Thread(this);
-		thread.start();	
-		
+		thread.start();
+
 	}
 
 	@Override
 	public void run() {
-				
+
 		while (true) {
 
 			gun.update();
-			
+
 			for (int i = 0; i < creatures.size(); i++) {
 				Creature c = (Creature) creatures.get(i);
 				c.update();
 			}
-			
+
 			ArrayList projectiles = gun.getProjectiles();
 			for (int i = 0; i < projectiles.size(); i++) {
 				Projectile p = (Projectile) projectiles.get(i);
@@ -119,7 +129,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 					projectiles.remove(i);
 				}
 			}
-			
+
 			repaint();
 			try {
 				Thread.sleep(6);
@@ -127,7 +137,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -153,7 +163,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 			Creature c = (Creature) creatures.get(i);
 			g.drawImage(c.getPic(), c.getCenterX(), c.getCenterY(), this);
 		}
-		
+
 		ArrayList projectiles = gun.getProjectiles();
 		for (int i = 0; i < projectiles.size(); i++) {
 			Projectile p = (Projectile) projectiles.get(i);
@@ -163,8 +173,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		for (int i = 0; i < creatures.size(); i++) {
 			Creature c = (Creature) creatures.get(i);
-			g.drawRect((int)c.rect.getX(), (int)c.rect.getY(), (int)c.rect.getWidth(), (int)c.rect.getHeight());
-		}		
+			g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
+		}
 	}
 
 	@Override
@@ -195,9 +205,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 			break;
 
 		case KeyEvent.VK_RIGHT:
-				gun.moveRight();
-				gun.setMovingLeft(false);
-				gun.setMovingRight(true);
+			gun.moveRight();
+			gun.setMovingLeft(false);
+			gun.setMovingRight(true);
 			break;
 
 		case KeyEvent.VK_SPACE:
@@ -211,7 +221,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			gun.stopLeft();
@@ -220,12 +230,12 @@ public class Main extends Applet implements Runnable, KeyListener {
 		case KeyEvent.VK_RIGHT:
 			gun.stopRight();
 			break;
-			
+
 		case KeyEvent.VK_SPACE:
 			gun.setReadyToFire(true);
 			break;
 		}
-		
+
 	}
 
 	private Image loadImage(String path) {
