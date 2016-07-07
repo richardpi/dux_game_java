@@ -25,12 +25,12 @@ public class Projectile {
 		y -= speedY;
 		r.setBounds(x, y, 3, 60);
 		
-		if (y < -20) {
+		if (y < 90) {
 		   visible = false;
 		   r = null;
 		}
 		
-		if (y > 0){
+		if (y > 90){
 			checkCollision();
 		}
 	}

@@ -2,18 +2,22 @@ package dux;
 
 import java.applet.Applet;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import dux.creatures.*;
-
 import java.util.*;
 
 public class Main extends Applet implements Runnable, KeyListener {
@@ -27,6 +31,10 @@ public class Main extends Applet implements Runnable, KeyListener {
 	private static Sound sound;
 
 	private int creatureCounter = 0;
+	
+	private Font font;
+	
+	private int i=0;
 
 	@Override
 	public void init() {
@@ -44,7 +52,19 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		gun = new Gun();
 		gun.setGunPic(loadImage("data/gun2.png"));
+		
+		font = new Font("Digital-7", Font.PLAIN, 50);
 
+		try {
+		     GraphicsEnvironment ge = 
+		         GraphicsEnvironment.getLocalGraphicsEnvironment();
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/digital-7.ttf")));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} catch(FontFormatException e) {
+		    e.printStackTrace();
+		}
+		
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
 
@@ -77,6 +97,15 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 			}
 		}, 1, 300);
+		
+		java.util.Timer t1 = new java.util.Timer();
+		t1.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				i++;
+			}
+		}, 1, 1000);
 	}
 
 	private void createDuck() {
@@ -157,6 +186,16 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void paint(Graphics g) {
+		
+		g.setFont(font);
+		g.setColor(new Color(238, 238, 238));
+		
+		g.fillRect(25, 25, 974, 2);
+		g.drawString("SCORE  " + String.format("%06d", 0), 25, 70);
+		g.drawString("TIME  " + String.format("%03d", i), 425, 70);
+		g.drawString("HIGHS  " + String.format("%06d", 0), 725, 70);
+		g.fillRect(25, 80, 974, 2);
+		
 		g.drawImage(gun.getGunPic(), gun.getCenterX() - 10, gun.getCenterY() - 100, this);
 
 		for (int i = 0; i < creatures.size(); i++) {

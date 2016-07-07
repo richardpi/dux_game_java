@@ -13,7 +13,7 @@ public abstract class Creature {
 	private Image rightPic;	
 	
 	final int MOVESPEED = 1;
-	final int OFFSET_Y = 130;
+	final int OFFSET_Y = 80;
 	
 	final int DIRECTION_LEFT = -1;
 	final int DIRECTION_RIGHT = 1;
@@ -24,7 +24,7 @@ public abstract class Creature {
 	private int speedX = 0;
 	
 	private int centerX;
-	private int centerY = 10;
+	private int centerY = 200;
 	
 	public void update() {
 		centerX += speedX;
