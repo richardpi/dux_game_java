@@ -42,6 +42,7 @@ public class Projectile {
 			Creature c = (Creature) creatures.get(i);
 			
 			if(r.intersects(c.rect)){
+				Creature.addPoints(c.getPointsMultiplier());
 				creatures.remove(i);
 				c = null;
 				

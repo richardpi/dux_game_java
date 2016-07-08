@@ -5,6 +5,10 @@ import java.awt.Rectangle;
 
 public abstract class Creature {
 
+	public static int points = 0;
+	
+	public static int ADD_POINTS = 200;	
+	
 	public Rectangle rect = new Rectangle(0, 0, 0, 0);
 	
 	private Image pic;
@@ -26,6 +30,8 @@ public abstract class Creature {
 	private int centerX;
 	private int centerY = 200;
 	
+	private int pointsMultiplier;
+	
 	public void update() {
 		centerX += speedX;
 		
@@ -34,6 +40,7 @@ public abstract class Creature {
 			centerY += OFFSET_Y;
 			speedX = MOVESPEED * DIRECTION_RIGHT;
 			pic = rightPic;
+			pointsMultiplier--;
 		}
 		
 		if (centerX > START_RIGHT) {
@@ -41,6 +48,7 @@ public abstract class Creature {
 			centerY += OFFSET_Y;
 			speedX = MOVESPEED * DIRECTION_LEFT;
 			pic = leftPic;
+			pointsMultiplier--;
 		}
 		
 		rect.setRect(centerX , centerY, 25, 47);
@@ -50,6 +58,7 @@ public abstract class Creature {
 		speedX = MOVESPEED * DIRECTION_RIGHT;
 		pic = rightPic;
 		centerX = START_LEFT;
+		pointsMultiplier = 3;
 	}
 
 	public int getCenterX() {
@@ -90,5 +99,17 @@ public abstract class Creature {
 
 	public void setRightPic(Image rightPic) {
 		this.rightPic = rightPic;
+	}
+	
+	public static void addPoints(int multiplier) {
+		points += ADD_POINTS * multiplier;
+	}
+
+	public int getPointsMultiplier() {
+		return pointsMultiplier;
+	}
+
+	public void setPointsMultiplier(int pointsMultiplier) {
+		this.pointsMultiplier = pointsMultiplier;
 	}
 }

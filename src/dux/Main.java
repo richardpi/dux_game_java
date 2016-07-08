@@ -27,14 +27,14 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	private static Gun gun;
 	public static ArrayList<Creature> creatures = new ArrayList<Creature>();
-
+	
 	private static Sound sound;
 
 	private int creatureCounter = 0;
 	
 	private Font font;
 	
-	private int i=0;
+	private int time = 250;
 
 	@Override
 	public void init() {
@@ -53,6 +53,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 		gun = new Gun();
 		gun.setGunPic(loadImage("data/gun2.png"));
 		
+		Bullet.setPic(loadImage("data/bullet.png"));
+		
 		font = new Font("Digital-7", Font.PLAIN, 50);
 
 		try {
@@ -63,6 +65,12 @@ public class Main extends Applet implements Runnable, KeyListener {
 		    e.printStackTrace();
 		} catch(FontFormatException e) {
 		    e.printStackTrace();
+		}
+
+		for (int i = 0; i < Bullet.INIT_BULLETS; i++) {
+			Bullet b = new Bullet();
+			b.setCenterX(Bullet.START_LEFT + Bullet.SPACING * i);
+			Bullet.bullets.add(b);
 		}
 		
 		java.util.Timer t = new java.util.Timer();
@@ -103,9 +111,10 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 			@Override
 			public void run() {
-				i++;
+				time--;
 			}
-		}, 1, 1000);
+		}, 1, 500);
+				
 	}
 
 	private void createDuck() {
@@ -191,13 +200,20 @@ public class Main extends Applet implements Runnable, KeyListener {
 		g.setColor(new Color(238, 238, 238));
 		
 		g.fillRect(25, 25, 974, 2);
-		g.drawString("SCORE  " + String.format("%06d", 0), 25, 70);
-		g.drawString("TIME  " + String.format("%03d", i), 425, 70);
+		g.drawString("SCORE  " + String.format("%06d", Creature.points), 25, 70);
+		g.drawString("TIME  " + String.format("%03d", time), 425, 70);
 		g.drawString("HIGHS  " + String.format("%06d", 0), 725, 70);
 		g.fillRect(25, 80, 974, 2);
 		
+		g.fillRect(25, 720, 974, 2);
+		
 		g.drawImage(gun.getGunPic(), gun.getCenterX() - 10, gun.getCenterY() - 100, this);
 
+		for (int i = 0; i < Bullet.bullets.size(); i++) {
+			Bullet b = (Bullet) Bullet.bullets.get(i);
+			g.drawImage(Bullet.getPic(), b.getCenterX(), b.getCenterY(), this);
+		}
+		
 		for (int i = 0; i < creatures.size(); i++) {
 			Creature c = (Creature) creatures.get(i);
 			g.drawImage(c.getPic(), c.getCenterX(), c.getCenterY(), this);

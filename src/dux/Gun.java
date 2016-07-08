@@ -17,7 +17,7 @@ public class Gun {
 	private int speedX = 0;
 	
 	private int centerX = 1024/2;
-	private int centerY = 720;
+	private int centerY = 770;
 	
 	private boolean movingLeft = false;
 	private boolean movingRight = false;
@@ -41,6 +41,7 @@ public class Gun {
  			Projectile p = new Projectile(centerX - 8, centerY - 140);
  			projectiles.add(p);
  			
+ 			Bullet.remove();
  			Sound.shoot();
  		}
 	}
