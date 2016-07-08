@@ -11,10 +11,10 @@ public abstract class Creature {
 	
 	public Rectangle rect = new Rectangle(0, 0, 0, 0);
 	
-	private Image pic;
+	protected Image pic;
 	
-	private Image leftPic;
-	private Image rightPic;	
+	protected Image leftPic;
+	protected Image rightPic;	
 	
 	final int MOVESPEED = 1;
 	final int OFFSET_Y = 80;
@@ -25,33 +25,52 @@ public abstract class Creature {
 	final int START_RIGHT = 790;
 	final int START_LEFT = -250;
 	
-	private int speedX = 0;
+	protected int speedX = 0;
 	
-	private int centerX;
+	protected int centerX;
 	private int centerY = 200;
 	
 	private int pointsMultiplier;
+	
+	/* temp? */
+	protected int row = 3;
+	
+	protected int lives = 1;
 	
 	public void update() {
 		centerX += speedX;
 		
 		if (centerX < START_LEFT) {
-			centerX = START_LEFT;
-			centerY += OFFSET_Y;
-			speedX = MOVESPEED * DIRECTION_RIGHT;
-			pic = rightPic;
-			pointsMultiplier--;
+			updateLeft();
 		}
 		
 		if (centerX > START_RIGHT) {
-			centerX = START_RIGHT;
-			centerY += OFFSET_Y;
-			speedX = MOVESPEED * DIRECTION_LEFT;
-			pic = leftPic;
-			pointsMultiplier--;
+			updateRight();
 		}
 		
+		updateDefault();
+	}
+	
+	protected void updateDefault() {
 		rect.setRect(centerX , centerY, 25, 47);
+	}
+	
+	protected void updateLeft() {
+		centerX = START_LEFT;
+		centerY += OFFSET_Y;
+		speedX = MOVESPEED * DIRECTION_RIGHT;
+		pic = rightPic;
+		pointsMultiplier--;
+		row--;		
+	}
+	
+	protected void updateRight() {
+		centerX = START_RIGHT;
+		centerY += OFFSET_Y;
+		speedX = MOVESPEED * DIRECTION_LEFT;
+		pic = leftPic;
+		pointsMultiplier--;
+		row--;		
 	}
 	
 	public void init() {
@@ -111,5 +130,16 @@ public abstract class Creature {
 
 	public void setPointsMultiplier(int pointsMultiplier) {
 		this.pointsMultiplier = pointsMultiplier;
+	}
+
+	public int getLives() {
+		return lives;
+	}
+
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+	
+	public void hit() {
 	}
 }

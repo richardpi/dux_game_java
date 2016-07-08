@@ -26,11 +26,10 @@ public class Projectile {
 		r.setBounds(x, y, 3, 60);
 		
 		if (y < 90) {
-		   visible = false;
-		   r = null;
+			removeBullet();
 		}
 		
-		if (y > 90){
+		if (y > 90) {
 			checkCollision();
 		}
 	}
@@ -41,12 +40,21 @@ public class Projectile {
 		for (int i = 0; i < creatures.size(); i++) {
 			Creature c = (Creature) creatures.get(i);
 			
-			if(r.intersects(c.rect)){
-				Creature.addPoints(c.getPointsMultiplier());
-				creatures.remove(i);
-				c = null;
-				
-				Sound.hit();
+			if (r != null) {
+				if(r.intersects(c.rect)){
+
+					c.setLives(c.getLives() - 1);
+					c.hit();
+					Sound.hit();
+					
+					if (0 >= c.getLives()) {
+						Creature.addPoints(c.getPointsMultiplier());
+						creatures.remove(i);
+						c = null;					
+					}
+					
+					removeBullet();				
+				}				
 			}
 		}
 		
@@ -84,4 +92,8 @@ public class Projectile {
 		this.visible = visible;
 	}	
 	
+	private void removeBullet() {
+		visible = false;
+		r = null;		
+	}
 }
