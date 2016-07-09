@@ -79,7 +79,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 			@Override
 			public void run() {
 
-				int rand = new Random().nextInt(3);
+				int rand = new Random().nextInt(4);
 
 				switch (rand) {
 				case 0:
@@ -94,11 +94,15 @@ public class Main extends Applet implements Runnable, KeyListener {
 					System.out.println("rabbit added: " + creatureCounter);
 					createRabbit();
 					break;
+				case 3:
+					System.out.println("points10 added: " + creatureCounter);
+					createPoints10();
+					break;
 				}
 
 				creatureCounter++;
 
-				if (10 <= creatureCounter) {
+				if (15 <= creatureCounter) {
 					t.cancel();
 					t.purge();
 				}
@@ -127,6 +131,16 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	private void createRabbit() {
 		createCreature("data/rabbit.png", new Rabbit());
+	}
+	
+	private void createPoints10() {
+		Creature c = new Points();
+		Image imageRight = loadImage("data/points10.png");
+		Image imageLeft = loadImage("data/points5.png");
+		c.setRightPic(imageRight);
+		c.setLeftPic(imageLeft);
+		c.init();
+		creatures.add(c);
 	}
 
 	private void createCreature(String image, Creature c) {

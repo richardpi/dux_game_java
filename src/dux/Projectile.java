@@ -45,10 +45,10 @@ public class Projectile {
 
 					c.setLives(c.getLives() - 1);
 					c.hit();
+					Creature.addPoints(c.getPointsMultiplier());
 					Sound.hit();
 					
-					if (0 >= c.getLives()) {
-						Creature.addPoints(c.getPointsMultiplier());
+					if (0 >= c.getLives()) {						
 						creatures.remove(i);
 						c = null;					
 					}
