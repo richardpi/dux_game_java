@@ -73,32 +73,49 @@ public class Main extends Applet implements Runnable, KeyListener {
 			Bullet.bullets.add(b);
 		}
 		
+		for (int i = 0; i < 20; i++) {
+			initCreatures(4);
+		}
+
+		for (int i = 20; i < 60; i++) {
+			initCreatures(3);
+		}
+		
+		//row 1
+		int pos = 0;
+		for (int i = 0; i < 20; i++) {
+			pos++;
+			Creature c = (Creature) creatures.get(i);
+			c.setCenterX(Creature.START_LEFT + 55 * pos);
+		}
+		
+		//row 2
+		pos = 0;
+		for (int i = 20; i < 40 ; i++) {
+			pos++;
+			Creature c = (Creature) creatures.get(i);
+			c.setCenterX(Creature.START_RIGHT - 55 * pos);
+			c.initRight();
+		}
+
+		//row 3
+		pos = 0;
+		for (int i = 40; i < 60 ; i++) {
+			pos++;
+			Creature c = (Creature) creatures.get(i);
+			c.setCenterX(Creature.START_LEFT + 55 * pos);
+			c.initRight();
+			c.initLeft();
+		}
+		
+		/*
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
 
-				int rand = new Random().nextInt(4);
-
-				switch (rand) {
-				case 0:
-					System.out.println("duck added: " + creatureCounter);
-					createDuck();
-					break;
-				case 1:
-					System.out.println("owl added: " + creatureCounter);
-					createOwl();
-					break;
-				case 2:
-					System.out.println("rabbit added: " + creatureCounter);
-					createRabbit();
-					break;
-				case 3:
-					System.out.println("points10 added: " + creatureCounter);
-					createPoints10();
-					break;
-				}
+				initCreatures();
 
 				creatureCounter++;
 
@@ -109,6 +126,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 			}
 		}, 1, 300);
+		*/
 		
 		java.util.Timer t1 = new java.util.Timer();
 		t1.schedule(new TimerTask() {
@@ -119,6 +137,28 @@ public class Main extends Applet implements Runnable, KeyListener {
 			}
 		}, 1, 500);
 				
+	}
+	
+	private void initCreatures(int r) {
+		int rand = new Random().nextInt(r);
+
+		switch (rand) {
+		case 0:
+			createOwl();
+			break;
+		case 1:
+			createRabbit();
+			break;
+		case 2:
+			createBlank();
+			break;
+		case 3:
+			createPoints();
+			break;
+		case 4:
+			createDuck();
+			break;
+		}
 	}
 
 	private void createDuck() {
@@ -133,7 +173,13 @@ public class Main extends Applet implements Runnable, KeyListener {
 		createCreature("data/rabbit.png", new Rabbit());
 	}
 	
-	private void createPoints10() {
+	private void createBlank() {
+		Creature c = new Blank();
+		c.init();
+		creatures.add(c);		
+	}
+	
+	private void createPoints() {
 		Creature c = new Points();
 		Image imageRight = loadImage("data/points10.png");
 		Image imageLeft = loadImage("data/points5.png");
@@ -169,6 +215,13 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 			for (int i = 0; i < creatures.size(); i++) {
 				Creature c = (Creature) creatures.get(i);
+				
+				if (c instanceof Points) {
+					if (1 >= c.getRow()) {
+						creatures.remove(i);
+					}
+				}
+				
 				c.update();
 			}
 
@@ -230,7 +283,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 		
 		for (int i = 0; i < creatures.size(); i++) {
 			Creature c = (Creature) creatures.get(i);
-			g.drawImage(c.getPic(), c.getCenterX(), c.getCenterY(), this);
+			g.drawImage(c.getPic(), (int)c.getCenterX(), c.getCenterY(), this);
 		}
 
 		ArrayList projectiles = gun.getProjectiles();
@@ -240,10 +293,13 @@ public class Main extends Applet implements Runnable, KeyListener {
 			g.fillRect(p.getX(), p.getY(), 3, 60);
 		}
 
+		/*
 		for (int i = 0; i < creatures.size(); i++) {
 			Creature c = (Creature) creatures.get(i);
 			g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
 		}
+		*/
+		
 	}
 
 	@Override

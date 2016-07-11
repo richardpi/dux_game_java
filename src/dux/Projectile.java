@@ -45,7 +45,7 @@ public class Projectile {
 
 					c.setLives(c.getLives() - 1);
 					c.hit();
-					Creature.addPoints(c.getPointsMultiplier());
+					Creature.addPoints(c.getRow());
 					Sound.hit();
 					
 					if (0 >= c.getLives()) {						
