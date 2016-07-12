@@ -10,63 +10,93 @@ public class CreatureFactory {
 	public static void initCreatures(int r) {
 		int rand = new Random().nextInt(r);
 
+		Creature c = null;
+		
 		switch (rand) {
 		case 0:
 		case 2:
-			createOwl();
+			c = createOwl();
 			break;
 		case 1:
 		case 3:
-			createRabbit();
+			c = createRabbit();
 			break;
 		case 4:
 		case 6:
-			createBlank();
+			c = createBlank();
 			break;
 		case 5:
-			createPoints();
+			c = createPoints();
 			break;
 		case 7:
-			createDuck();
+			c = createDuck();
 			break;
 		}
-	}
-
-	public static void createDuck() {
-		createCreature("data/dux.png", new Duck());
-	}
-
-	public static void createOwl() {
-		createCreature("data/owl.png", new Owl());
-	}
-
-	public static void createRabbit() {
-		createCreature("data/rabbit.png", new Rabbit());
-	}
-	
-	public static void createBlank() {
-		Creature c = new Blank();
+		
 		c.init();
-		Main.creatures.add(c);		
+		Main.creatures.add(c);
 	}
 	
-	public static void createPoints() {
-		Creature c = new Points();
+	public static void replaceBlankWith(Creature b) {
+		int rand = new Random().nextInt(5);
+
+		Creature c = null;
+				
+		switch (rand) {
+		case 0:
+			c = createOwl();
+			break;			
+		case 1:
+			c = createDuck();
+			break;
+		case 2:
+			c = createPoints();
+			break;
+		case 3:
+			c = createDuck();
+			break;
+		case 4:
+			c = createRabbit();			
+		}
+		
+		c.init();
+		
+		Main.creatures.add(c);
+	}
+
+	public static Duck createDuck() {
+		return (Duck) createCreature("data/dux.png", new Duck());
+	}
+
+	public static Owl createOwl() {
+		return (Owl) createCreature("data/owl.png", new Owl());
+	}
+
+	public static Rabbit createRabbit() {
+		return (Rabbit) createCreature("data/rabbit.png", new Rabbit());
+	}
+	
+	public static Blank createBlank() {
+		return new Blank();		
+	}
+	
+	public static Points createPoints() {
+		Points c = new Points();
 		Image imageRight = Main.loaderTools.loadImage("data/points10.png");
 		Image imageLeft = Main.loaderTools.loadImage("data/points5.png");
 		c.setRightPic(imageRight);
 		c.setLeftPic(imageLeft);
-		c.init();
-		Main.creatures.add(c);
+
+		return c;
 	}
 
-	public static void createCreature(String image, Creature c) {
+	public static Creature createCreature(String image, Creature c) {
 		Image imageRight = Main.loaderTools.loadImage(image);
 		Image imageLeft = ImageTools.flipImage(imageRight);
 		c.setRightPic(imageRight);
 		c.setLeftPic(imageLeft);
-		c.init();
-		Main.creatures.add(c);
+		
+		return c;
 	}
 	
 	public static void createReplacementBlank(Creature c) {

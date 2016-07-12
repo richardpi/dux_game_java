@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import dux.creatures.*;
 import java.util.*;
@@ -21,7 +20,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	public static LoaderTools loaderTools;
 	
-	public static boolean test = true;
+	public static boolean test = false;
 	
 	private Image image;
 	private Graphics second;
@@ -30,8 +29,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public static ArrayList<Creature> creatures = new ArrayList<Creature>();
 	
 	private static Sound sound;
-
-	private int creatureCounter = 0;
 	
 	private Font font;
 	
@@ -144,6 +141,18 @@ public class Main extends Applet implements Runnable, KeyListener {
 				if (c instanceof Points) {
 					if (1 >= c.getRow()) {						
 						CreatureFactory.createReplacementBlank(c);
+						creatures.remove(i);
+					}
+				}
+				
+				if (c.isReplace()) {
+					System.out.println("try replace");
+					c.setReplace(false);
+					int rand = new Random().nextInt(3);
+					
+					if (2 == rand) {
+						System.out.println("replaced");
+						CreatureFactory.replaceBlankWith(c);
 						creatures.remove(i);
 					}
 				}

@@ -21,7 +21,7 @@ public abstract class Creature {
 	protected Image leftPic;
 	protected Image rightPic;	
 	
-	final double MOVESPEED = 0.5;
+	final double MOVESPEED = 0.6;
 	final int OFFSET_Y = 100;
 	
 	final int DIRECTION_LEFT = -1;
@@ -36,11 +36,19 @@ public abstract class Creature {
 	
 	protected int lives = 1;
 	
+	protected boolean replace = false;
+	
 	public void update() {
 		centerX += speedX;
 		
 		if (0 >= row) {
 			init();
+			
+			if (this instanceof Blank) {
+				System.out.println("im blank");
+				replace = true;
+			}
+			
 		} else {
 			if (centerX < START_LEFT) {
 				updateLeft();
@@ -101,7 +109,7 @@ public abstract class Creature {
 	}
 	
 	public void init() {
-		speedX = MOVESPEED * DIRECTION_RIGHT;
+		initSpeedRight();
 		pic = rightPic;
 		centerX = START_LEFT;
 		centerY = START_TOP;
@@ -169,5 +177,13 @@ public abstract class Creature {
 
 	public void setRow(int row) {
 		this.row = row;
+	}
+
+	public boolean isReplace() {
+		return replace;
+	}
+
+	public void setReplace(boolean replace) {
+		this.replace = replace;
 	}
 }
