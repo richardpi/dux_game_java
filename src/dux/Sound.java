@@ -36,7 +36,7 @@ public class Sound {
 	public static void music() {
 		try {
 			Player player = Manager.createPlayer(new MediaLocator(new File("data/main.mp3").toURI().toURL()));
-			player.start();
+			//player.start();
 		}
 		catch(Exception ex){
 			ex.printStackTrace();

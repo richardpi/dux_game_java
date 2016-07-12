@@ -8,20 +8,21 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import dux.creatures.*;
 import java.util.*;
 
 public class Main extends Applet implements Runnable, KeyListener {
 
+	public static LoaderTools loaderTools;
+	
+	public static boolean test = true;
+	
 	private Image image;
 	private Graphics second;
 
@@ -47,13 +48,15 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		addKeyListener(this);
 
+		loaderTools = new LoaderTools();
+		loaderTools.setComponent(this);
+		
 		sound = new Sound();
 		Sound.music();
 
 		gun = new Gun();
-		gun.setGunPic(loadImage("data/gun2.png"));
-		
-		Bullet.setPic(loadImage("data/bullet.png"));
+		gun.setGunPic(loaderTools.loadImage("data/gun2.png"));		
+		Bullet.setPic(loaderTools.loadImage("data/bullet.png"));
 		
 		font = new Font("Digital-7", Font.PLAIN, 50);
 
@@ -74,11 +77,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 		}
 		
 		for (int i = 0; i < 20; i++) {
-			initCreatures(4);
+			CreatureFactory.initCreatures(7);
 		}
 
 		for (int i = 20; i < 60; i++) {
-			initCreatures(3);
+			CreatureFactory.initCreatures(5);
 		}
 		
 		//row 1
@@ -108,26 +111,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 			c.initLeft();
 		}
 		
-		/*
-		java.util.Timer t = new java.util.Timer();
-		t.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-
-				initCreatures();
-
-				creatureCounter++;
-
-				if (15 <= creatureCounter) {
-					t.cancel();
-					t.purge();
-				}
-
-			}
-		}, 1, 300);
-		*/
-		
 		java.util.Timer t1 = new java.util.Timer();
 		t1.schedule(new TimerTask() {
 
@@ -139,64 +122,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 				
 	}
 	
-	private void initCreatures(int r) {
-		int rand = new Random().nextInt(r);
-
-		switch (rand) {
-		case 0:
-			createOwl();
-			break;
-		case 1:
-			createRabbit();
-			break;
-		case 2:
-			createBlank();
-			break;
-		case 3:
-			createPoints();
-			break;
-		case 4:
-			createDuck();
-			break;
-		}
-	}
-
-	private void createDuck() {
-		createCreature("data/dux.png", new Duck());
-	}
-
-	private void createOwl() {
-		createCreature("data/owl.png", new Owl());
-	}
-
-	private void createRabbit() {
-		createCreature("data/rabbit.png", new Rabbit());
-	}
-	
-	private void createBlank() {
-		Creature c = new Blank();
-		c.init();
-		creatures.add(c);		
-	}
-	
-	private void createPoints() {
-		Creature c = new Points();
-		Image imageRight = loadImage("data/points10.png");
-		Image imageLeft = loadImage("data/points5.png");
-		c.setRightPic(imageRight);
-		c.setLeftPic(imageLeft);
-		c.init();
-		creatures.add(c);
-	}
-
-	private void createCreature(String image, Creature c) {
-		Image imageRight = loadImage(image);
-		Image imageLeft = ImageTools.flipImage(imageRight);
-		c.setRightPic(imageRight);
-		c.setLeftPic(imageLeft);
-		c.init();
-		creatures.add(c);
-	}
 
 	@Override
 	public void start() {
@@ -217,7 +142,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 				Creature c = (Creature) creatures.get(i);
 				
 				if (c instanceof Points) {
-					if (1 >= c.getRow()) {
+					if (1 >= c.getRow()) {						
+						CreatureFactory.createReplacementBlank(c);
 						creatures.remove(i);
 					}
 				}
@@ -293,12 +219,12 @@ public class Main extends Applet implements Runnable, KeyListener {
 			g.fillRect(p.getX(), p.getY(), 3, 60);
 		}
 
-		/*
-		for (int i = 0; i < creatures.size(); i++) {
-			Creature c = (Creature) creatures.get(i);
-			g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
+		if (test) {
+			for (int i = 0; i < creatures.size(); i++) {
+				Creature c = (Creature) creatures.get(i);
+				g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
+			}			
 		}
-		*/
 		
 	}
 
@@ -363,17 +289,4 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	}
 
-	private Image loadImage(String path) {
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		MediaTracker tracker = new MediaTracker(this);
-		Image sourceImage = toolkit.getImage(path);
-		tracker.addImage(sourceImage, 0);
-
-		try {
-			tracker.waitForAll();
-		} catch (InterruptedException e) {
-		}
-
-		return sourceImage;
-	}
 }

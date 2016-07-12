@@ -49,8 +49,9 @@ public class Projectile {
 					Sound.hit();
 					
 					if (0 >= c.getLives()) {						
+						CreatureFactory.createReplacementBlank(c);
 						creatures.remove(i);
-						c = null;					
+						c = null;
 					}
 					
 					removeBullet();				

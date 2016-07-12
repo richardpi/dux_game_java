@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 public abstract class Creature {
 
-	private static int margins = 50;
+	private static int margins = 40;
 	
 	final public static int ADD_POINTS = 200;	
 	final public static int START_RIGHT = 1024 + margins;
@@ -60,16 +60,34 @@ public abstract class Creature {
 	
 	public void initLeft() {
 		centerY += OFFSET_Y;
-		speedX = MOVESPEED * DIRECTION_RIGHT;
+		initSpeedRight();
 		pic = rightPic;
 		row--;		
 	}
 	
 	public void initRight() {
 		centerY += OFFSET_Y;
-		speedX = MOVESPEED * DIRECTION_LEFT;
+		initSpeedLeft();
 		pic = leftPic;
 		row--;		
+	}
+	
+	public void determineSpeedDirection() {
+		if (3 == row || 1 == row) {
+			initSpeedRight();	
+		}
+		
+		if (2 == row) {
+			initSpeedLeft();	
+		}
+	}
+	
+	public void initSpeedLeft() {
+		speedX = MOVESPEED * DIRECTION_LEFT;
+	}
+	
+	public void initSpeedRight() {
+		speedX = MOVESPEED * DIRECTION_RIGHT;
 	}
 	
 	protected void updateLeft() {

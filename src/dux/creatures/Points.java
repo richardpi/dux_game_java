@@ -15,9 +15,5 @@ public class Points extends Creature {
 		}
 
 	}
-	
-	public int getCenterY() {
-		return super.getCenterY() + 7;
-	}	
 
 }
