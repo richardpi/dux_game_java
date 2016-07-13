@@ -47,13 +47,11 @@ public class CreatureFactory {
 			c = createOwl();
 			break;			
 		case 1:
+		case 3:
 			c = createDuck();
 			break;
 		case 2:
 			c = createPoints();
-			break;
-		case 3:
-			c = createDuck();
 			break;
 		case 4:
 			c = createRabbit();

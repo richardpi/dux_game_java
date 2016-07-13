@@ -19,7 +19,7 @@ import java.util.*;
 public class Main extends Applet implements Runnable, KeyListener {
 
 	public static LoaderTools loaderTools;
-	public static boolean test = true;
+	public static boolean test = false;
 	public static boolean stop = false;
 
 	private Image image;
@@ -118,16 +118,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 			}
 		}, 1, 300);
 
-		/*
-		new java.util.Timer().schedule(new java.util.TimerTask() {
-			@Override
-			public void run() {
-				stop = true;
-				Bullet.bulletsRemove();
-			}
-		}, 5000);
-		*/
-
 	}
 
 	@Override
@@ -162,16 +152,18 @@ public class Main extends Applet implements Runnable, KeyListener {
 						}
 					}
 
-					if (c.isReplace()) {
-						// System.out.println("try replace");
-						c.setReplace(false);
-						int rand = new Random().nextInt(4);
+					if (5 <= checkNumberCreatures()) {
+						if (c.isReplace()) {
+							System.out.println("try replace");
+							c.setReplace(false);
+							int rand = new Random().nextInt(4);
 
-						if (2 == rand) {
-							// System.out.println("replaced");
-							CreatureFactory.replaceBlankWith(c);
-							creatures.remove(i);
-						}
+							if (2 == rand) {
+								System.out.println("replaced");
+								CreatureFactory.replaceBlankWith(c);
+								creatures.remove(i);
+							}
+						}						
 					}
 
 					c.update();
@@ -196,6 +188,21 @@ public class Main extends Applet implements Runnable, KeyListener {
 			}
 		}
 
+	}
+	
+	private int checkNumberCreatures() {
+		int number = 0;
+		
+		for (int i = 0; i < creatures.size(); i++) {
+			Creature c = (Creature) creatures.get(i);
+			
+			if (false == c instanceof Blank) {
+				number++;
+			}
+		}
+		
+		//System.out.println(number);
+		return number;
 	}
 
 	@Override
