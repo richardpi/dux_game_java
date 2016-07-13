@@ -3,19 +3,20 @@ package dux.creatures;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import dux.Bullet;
-import dux.ImageTools;
+import dux.*;
 
 public class Duck extends Creature {
 
+	private boolean bulletsRemoved = false;
+	
 	public void end() {
-		Bullet.remove();
-		Bullet.remove();
-		Bullet.remove();
-		Bullet.remove();
-		Bullet.remove();
-		
-		setRemove(true);
+		if (!bulletsRemoved) {
+			bulletsRemoved = true;
+			setRemove(true);
+			Main.stop = true;
+			Bullet.bulletsRemove();			
+		}
+
 	}
 	
 	private void changeColor(int[] colors) {

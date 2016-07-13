@@ -19,7 +19,7 @@ import java.util.*;
 public class Main extends Applet implements Runnable, KeyListener {
 
 	public static LoaderTools loaderTools;
-	public static boolean test = false;
+	public static boolean test = true;
 	public static boolean stop = false;
 
 	private Image image;
@@ -118,6 +118,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 			}
 		}, 1, 300);
 
+		/*
 		new java.util.Timer().schedule(new java.util.TimerTask() {
 			@Override
 			public void run() {
@@ -125,6 +126,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 				Bullet.bulletsRemove();
 			}
 		}, 5000);
+		*/
 
 	}
 
@@ -134,10 +136,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 		Thread thread = new Thread(this);
 		thread.start();
 
-	}
-
-	public void yolo() {
-		System.out.println("yolo");
 	}
 
 	@Override
@@ -153,6 +151,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 					Creature c = (Creature) creatures.get(i);
 
 					if (c.isRemove()) {
+						CreatureFactory.createReplacementBlank(c);
 						creatures.remove(i);
 					}
 

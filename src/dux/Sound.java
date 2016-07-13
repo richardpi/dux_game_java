@@ -15,11 +15,13 @@ public class Sound {
 	
 	private static Clip shootClip;
 	private static Clip hitClip;
+	private static Clip bulletRemoveClip;
 	
 	public Sound() {
 				
 		shootClip = prepareClip("data/shoot.wav");
 		hitClip = prepareClip("data/hit.wav");
+		bulletRemoveClip = prepareClip("data/bulletRemove.wav");
 		
 		//stuff to mp3 player
 		Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
@@ -30,7 +32,8 @@ public class Sound {
 			new Format[]{input1, input2},
 			new Format[]{output},
 			PlugInManager.CODEC
-		);		
+		);
+
 	}
 	
 	public static void music() {
@@ -51,6 +54,11 @@ public class Sound {
 	public static void hit() {
         hitClip.setFramePosition(0);  // Must always rewind!
         hitClip.start();
+	}
+	
+	public static void bulletRemove() {
+		bulletRemoveClip.setFramePosition(0);  // Must always rewind!
+		bulletRemoveClip.start();		
 	}
 	
 	private static Clip prepareClip(String filename) {

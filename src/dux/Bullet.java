@@ -50,9 +50,9 @@ public class Bullet {
 
 		            	bulletCounter++;
 		            	Bullet.remove();
-
+		            	Sound.bulletRemove();
 		            	
-		            	System.out.println(bulletCounter);
+		            	//System.out.println(bulletCounter);
 		                if (5 <= bulletCounter) {
 		                	Main.stop = false;
 		                	bulletCounter = 0;
@@ -62,6 +62,7 @@ public class Bullet {
 		                
 		            }
 		        }, 1, 300);
+
 	}
 	
 	public int getCenterX() {
