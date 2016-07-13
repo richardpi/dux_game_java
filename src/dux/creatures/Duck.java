@@ -3,10 +3,21 @@ package dux.creatures;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import dux.Bullet;
 import dux.ImageTools;
 
 public class Duck extends Creature {
 
+	public void end() {
+		Bullet.remove();
+		Bullet.remove();
+		Bullet.remove();
+		Bullet.remove();
+		Bullet.remove();
+		
+		setRemove(true);
+	}
+	
 	private void changeColor(int[] colors) {
 		this.setPic(changeC(pic, colors));
 		this.setLeftPic(changeC(leftPic, colors));
@@ -20,22 +31,9 @@ public class Duck extends Creature {
 		 return (Image) bi2;		
 	}
 	
-	public void update() {
-		centerX += speedX;
-		
-		if (centerX < START_LEFT) {
-			updateLeft();
-			setLives(getLives() + 1);
-			updateColor();
-		}
-		
-		if (centerX > START_RIGHT) {
-			updateRight();
-			setLives(getLives() + 1);
-			updateColor();
-		}
-		
-		updateDefault();
+	protected void customUpdate() {	
+		setLives(getLives() + 1);
+		updateColor();
 	}
 	
 	public void hit() {

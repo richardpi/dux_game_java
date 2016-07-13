@@ -38,24 +38,28 @@ public abstract class Creature {
 	
 	protected boolean replace = false;
 	
+	protected boolean remove = false;
+	
 	public void update() {
 		centerX += speedX;
 		
 		if (0 >= row) {
-			init();
+			end();
 			
 			if (this instanceof Blank) {
-				System.out.println("im blank");
+				//System.out.println("im blank");
 				replace = true;
 			}
 			
 		} else {
 			if (centerX < START_LEFT) {
 				updateLeft();
+				customUpdate();
 			}
 			
 			if (centerX > START_RIGHT) {
 				updateRight();
+				customUpdate();
 			}			
 		}
 		
@@ -114,6 +118,10 @@ public abstract class Creature {
 		centerX = START_LEFT;
 		centerY = START_TOP;
 		row = 3;
+	}
+	
+	protected void end() {
+		init();
 	}
 
 	public double getCenterX() {
@@ -185,5 +193,16 @@ public abstract class Creature {
 
 	public void setReplace(boolean replace) {
 		this.replace = replace;
+	}
+	
+	protected void customUpdate() {	
+	}
+
+	public boolean isRemove() {
+		return remove;
+	}
+
+	public void setRemove(boolean remove) {
+		this.remove = remove;
 	}
 }

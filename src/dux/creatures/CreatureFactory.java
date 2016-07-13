@@ -28,9 +28,9 @@ public class CreatureFactory {
 		case 5:
 			c = createPoints();
 			break;
-		case 7:
-			c = createDuck();
-			break;
+		//case 8:
+		//	c = createDuck();
+		//	break;
 		}
 		
 		c.init();
@@ -56,7 +56,8 @@ public class CreatureFactory {
 			c = createDuck();
 			break;
 		case 4:
-			c = createRabbit();			
+			c = createRabbit();
+			break;
 		}
 		
 		c.init();

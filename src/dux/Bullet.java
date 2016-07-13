@@ -2,6 +2,7 @@ package dux;
 
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 public class Bullet {
 
@@ -12,6 +13,8 @@ public class Bullet {
 	public static int SPACING = 12;
 
 	private static Image pic;
+	
+	private static int bulletCounter = 0;
 	
 	private int centerX;
 	private int centerY = 731;
@@ -35,6 +38,30 @@ public class Bullet {
 			b.setCenterX(lastBullet.getCenterX() + Bullet.SPACING);
 			Bullet.bullets.add(b);
 		}
+	}
+
+	public static void bulletsRemove() {
+		
+		java.util.Timer t = new java.util.Timer();
+		t.schedule(new TimerTask() {
+
+		            @Override
+		            public void run() {
+
+		            	bulletCounter++;
+		            	Bullet.remove();
+
+		            	
+		            	System.out.println(bulletCounter);
+		                if (5 <= bulletCounter) {
+		                	Main.stop = false;
+		                	bulletCounter = 0;
+		                    t.cancel();
+		                    t.purge();
+		                }
+		                
+		            }
+		        }, 1, 300);
 	}
 	
 	public int getCenterX() {
