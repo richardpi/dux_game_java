@@ -19,11 +19,16 @@ import java.util.*;
 public class Main extends Applet implements Runnable, KeyListener {
 
 	public static LoaderTools loaderTools;
+	
 	public static boolean test = false;
 	public static boolean stop = false;
+	public static boolean playGame = false;
+	public static boolean gameOver = true;
 
 	private Image image;
 	private Graphics second;
+	
+	private static Image keyboard;
 
 	private static Gun gun;
 	public static ArrayList<Creature> creatures = new ArrayList<Creature>();
@@ -32,7 +37,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	private Font font;
 
-	private int time = 250;
+	private int time = 0;
 
 	@Override
 	public void init() {
@@ -55,6 +60,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 		gun.setGunPic(loaderTools.loadImage("data/gun2.png"));
 		Bullet.setPic(loaderTools.loadImage("data/bullet.png"));
 
+		keyboard = loaderTools.loadImage("data/keyboard.png");
+		
 		font = new Font("Digital-7", Font.PLAIN, 50);
 
 		try {
@@ -106,18 +113,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 			c.initRight();
 			c.initLeft();
 		}
-
-		java.util.Timer t1 = new java.util.Timer();
-		t1.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (!stop) {
-					time--;
-				}
-			}
-		}, 1, 300);
-
 	}
 
 	@Override
@@ -135,49 +130,52 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 			if (!stop) {
 
-				gun.update();
+				if (playGame) {
+					gun.update();
 
-				for (int i = 0; i < creatures.size(); i++) {
-					Creature c = (Creature) creatures.get(i);
+					for (int i = 0; i < creatures.size(); i++) {
+						Creature c = (Creature) creatures.get(i);
 
-					if (c.isRemove()) {
-						CreatureFactory.createReplacementBlank(c);
-						creatures.remove(i);
-					}
-
-					if (c instanceof Points) {
-						if (1 >= c.getRow()) {
+						if (c.isRemove()) {
 							CreatureFactory.createReplacementBlank(c);
 							creatures.remove(i);
 						}
-					}
 
-					if (5 <= checkNumberCreatures()) {
-						if (c.isReplace()) {
-							System.out.println("try replace");
-							c.setReplace(false);
-							int rand = new Random().nextInt(4);
-
-							if (2 == rand) {
-								System.out.println("replaced");
-								CreatureFactory.replaceBlankWith(c);
+						if (c instanceof Points) {
+							if (1 >= c.getRow()) {
+								CreatureFactory.createReplacementBlank(c);
 								creatures.remove(i);
 							}
-						}						
+						}
+
+						if (5 <= checkNumberCreatures()) {
+							if (c.isReplace()) {
+								System.out.println("try replace");
+								c.setReplace(false);
+								int rand = new Random().nextInt(4);
+
+								if (2 == rand) {
+									System.out.println("replaced");
+									CreatureFactory.replaceBlankWith(c);
+									creatures.remove(i);
+								}
+							}						
+						}
+
+						c.update();
 					}
 
-					c.update();
+					ArrayList projectiles = gun.getProjectiles();
+					for (int i = 0; i < projectiles.size(); i++) {
+						Projectile p = (Projectile) projectiles.get(i);
+						if (p.isVisible() == true) {
+							p.update();
+						} else {
+							projectiles.remove(i);
+						}
+					}					
 				}
-
-				ArrayList projectiles = gun.getProjectiles();
-				for (int i = 0; i < projectiles.size(); i++) {
-					Projectile p = (Projectile) projectiles.get(i);
-					if (p.isVisible() == true) {
-						p.update();
-					} else {
-						projectiles.remove(i);
-					}
-				}
+				
 			}
 
 			repaint();
@@ -188,6 +186,23 @@ public class Main extends Applet implements Runnable, KeyListener {
 			}
 		}
 
+	}
+	
+	private void playGame() {
+		
+		time = 250;
+		
+		java.util.Timer t1 = new java.util.Timer();
+		t1.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				if (!stop) {
+					time--;
+				}
+			}
+		}, 1, 300);
+		
 	}
 	
 	private int checkNumberCreatures() {
@@ -234,30 +249,40 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		g.fillRect(25, 720, 974, 2);
 
-		g.drawImage(gun.getGunPic(), gun.getCenterX() - 10, gun.getCenterY() - 100, this);
-
 		for (int i = 0; i < Bullet.bullets.size(); i++) {
 			Bullet b = (Bullet) Bullet.bullets.get(i);
 			g.drawImage(Bullet.getPic(), b.getCenterX(), b.getCenterY(), this);
 		}
-
-		for (int i = 0; i < creatures.size(); i++) {
-			Creature c = (Creature) creatures.get(i);
-			g.drawImage(c.getPic(), (int) c.getCenterX(), c.getCenterY(), this);
+		
+		if (gameOver) {
+			g.fillRect(400, 280, 230, 2);
+			g.drawString("GAME  OVER", 405, 325);
+			g.fillRect(400, 336, 230, 2);
+			g.drawImage(keyboard, 695, 630, this);
 		}
-
-		ArrayList projectiles = gun.getProjectiles();
-		for (int i = 0; i < projectiles.size(); i++) {
-			Projectile p = (Projectile) projectiles.get(i);
-			g.setColor(new Color(238, 238, 238));
-			g.fillRect(p.getX(), p.getY(), 3, 60);
-		}
-
-		if (test) {
+		
+		if (playGame) {
+			
+			g.drawImage(gun.getGunPic(), gun.getCenterX() - 10, gun.getCenterY() - 100, this);
+			
 			for (int i = 0; i < creatures.size(); i++) {
 				Creature c = (Creature) creatures.get(i);
-				g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
+				g.drawImage(c.getPic(), (int) c.getCenterX(), c.getCenterY(), this);
 			}
+
+			ArrayList projectiles = gun.getProjectiles();
+			for (int i = 0; i < projectiles.size(); i++) {
+				Projectile p = (Projectile) projectiles.get(i);
+				g.setColor(new Color(238, 238, 238));
+				g.fillRect(p.getX(), p.getY(), 3, 60);
+			}
+
+			if (test) {
+				for (int i = 0; i < creatures.size(); i++) {
+					Creature c = (Creature) creatures.get(i);
+					g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
+				}
+			}			
 		}
 
 	}
@@ -281,7 +306,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
+				
 		if (!stop) {
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
@@ -310,6 +335,14 @@ public class Main extends Applet implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 
+		if (gameOver) {
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				gameOver = false;
+				playGame = true;
+				playGame();
+			}
+		}
+		
 		if (!stop) {
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
