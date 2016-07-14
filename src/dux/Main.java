@@ -25,6 +25,8 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public static boolean playGame = false;
 	public static boolean gameOver = true;
 	public static boolean loadLevel = false;
+	public static boolean keyboardImage = true;
+	
 	public static int level = 1;
 	
 	private Image image;
@@ -56,7 +58,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 		loaderTools.setComponent(this);
 
 		sound = new Sound();
-		Sound.music();
+		//Sound.music();
 
 		gun = new Gun();
 		gun.setGunPic(loaderTools.loadImage("data/gun2.png"));
@@ -115,6 +117,24 @@ public class Main extends Applet implements Runnable, KeyListener {
 			c.initRight();
 			c.initLeft();
 		}
+		
+		
+		///////////////
+		
+		java.util.Timer t = new java.util.Timer();
+		t.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				
+				System.out.println("gameover");
+				gameOver();
+				
+				t.cancel();
+				t.purge();
+			}
+		}, 10000, 1000);
+		
+		
 	}
 
 	@Override
@@ -190,12 +210,23 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	}
 	
+	private void gameOver() {
+		stop = true;
+		playGame = true;
+		gameOver = true;
+		loadLevel = false;
+		keyboardImage = false;
+	}
+	
 	private void playGame() {
 
+		Sound.music();
+		
 		stop = false;
 		gameOver = false;
 		playGame = true;
 		loadLevel = false;
+		keyboardImage = false;
 		
 		java.util.Timer t1 = new java.util.Timer();
 		t1.schedule(new TimerTask() {
@@ -215,6 +246,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 		gameOver = false;
 		playGame = false;
 		loadLevel = true;
+		keyboardImage = false;
 		
 		time = 250;
 		Sound.start();
@@ -295,9 +327,13 @@ public class Main extends Applet implements Runnable, KeyListener {
 		if (gameOver) {
 			g.fillRect(400, 280, 230, 2);
 			g.drawString("GAME  OVER", 405, 325);
-			g.fillRect(400, 336, 230, 2);
+			g.fillRect(400, 336, 230, 2);			
+		}
+		
+		if (keyboardImage) {
 			g.drawImage(keyboard, 695, 630, this);
 		}
+		
 		
 		if (playGame) {
 			
