@@ -24,7 +24,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public static boolean stop = false;
 	public static boolean playGame = false;
 	public static boolean gameOver = true;
-
+	public static boolean loadLevel = false;
+	public static int level = 1;
+	
 	private Image image;
 	private Graphics second;
 	
@@ -152,7 +154,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 							if (c.isReplace()) {
 								System.out.println("try replace");
 								c.setReplace(false);
-								int rand = new Random().nextInt(4);
+								int rand = new Random().nextInt(3);
 
 								if (2 == rand) {
 									System.out.println("replaced");
@@ -189,8 +191,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 	}
 	
 	private void playGame() {
-		
-		time = 250;
+
+		stop = false;
+		gameOver = false;
+		playGame = true;
+		loadLevel = false;
 		
 		java.util.Timer t1 = new java.util.Timer();
 		t1.schedule(new TimerTask() {
@@ -203,6 +208,33 @@ public class Main extends Applet implements Runnable, KeyListener {
 			}
 		}, 1, 300);
 		
+	}
+	
+	private void loadLevel() {
+		stop = false;
+		gameOver = false;
+		playGame = false;
+		loadLevel = true;
+		
+		time = 250;
+		Sound.start();
+
+		Thread waitToPlay = new Thread() {
+		    public void run() {
+				boolean wait = true;
+
+				while (wait) {
+					
+					if (Sound.startClip.getMicrosecondLength() <= Sound.startClip.getMicrosecondPosition()) {
+						wait = false;
+						playGame();
+					}
+					
+				}
+		    }  
+		};
+
+		waitToPlay.start();
 	}
 	
 	private int checkNumberCreatures() {
@@ -252,6 +284,12 @@ public class Main extends Applet implements Runnable, KeyListener {
 		for (int i = 0; i < Bullet.bullets.size(); i++) {
 			Bullet b = (Bullet) Bullet.bullets.get(i);
 			g.drawImage(Bullet.getPic(), b.getCenterX(), b.getCenterY(), this);
+		}
+		
+		if (loadLevel) {
+			g.fillRect(430, 280, 173, 2);
+			g.drawString("LEVEL " + String.format("%02d", level), 435, 325);
+			g.fillRect(430, 336, 173, 2);			
 		}
 		
 		if (gameOver) {
@@ -308,26 +346,30 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 				
 		if (!stop) {
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-				gun.moveLeft();
-				gun.setMovingLeft(true);
-				gun.setMovingRight(false);
-				break;
+			
+			if (playGame) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT:
+					gun.moveLeft();
+					gun.setMovingLeft(true);
+					gun.setMovingRight(false);
+					break;
 
-			case KeyEvent.VK_RIGHT:
-				gun.moveRight();
-				gun.setMovingLeft(false);
-				gun.setMovingRight(true);
-				break;
+				case KeyEvent.VK_RIGHT:
+					gun.moveRight();
+					gun.setMovingLeft(false);
+					gun.setMovingRight(true);
+					break;
 
-			case KeyEvent.VK_SPACE:
-				if (gun.isReadyToFire()) {
-					gun.shoot();
-					gun.setReadyToFire(false);
-				}
-				break;
-			}			
+				case KeyEvent.VK_SPACE:
+					if (gun.isReadyToFire()) {
+						gun.shoot();
+						gun.setReadyToFire(false);
+					}
+					break;
+				}				
+			}
+		
 		}
 
 	}
@@ -337,26 +379,28 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		if (gameOver) {
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				gameOver = false;
-				playGame = true;
-				playGame();
+				loadLevel();
 			}
 		}
 		
 		if (!stop) {
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-				gun.stopLeft();
-				break;
+			
+			if (playGame) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT:
+					gun.stopLeft();
+					break;
 
-			case KeyEvent.VK_RIGHT:
-				gun.stopRight();
-				break;
+				case KeyEvent.VK_RIGHT:
+					gun.stopRight();
+					break;
 
-			case KeyEvent.VK_SPACE:
-				gun.setReadyToFire(true);
-				break;
+				case KeyEvent.VK_SPACE:
+					gun.setReadyToFire(true);
+					break;
+				}				
 			}
+
 		}
 
 	}
