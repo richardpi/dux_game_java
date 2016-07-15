@@ -15,22 +15,22 @@ public class CreatureFactory {
 		switch (rand) {
 		case 0:
 		case 2:
+		case 7:
 			c = createOwl();
 			break;
 		case 1:
 		case 3:
+		case 8:
 			c = createRabbit();
 			break;
 		case 4:
 		case 6:
+		case 9:
 			c = createBlank();
 			break;
 		case 5:
 			c = createPoints();
 			break;
-		//case 8:
-		//	c = createDuck();
-		//	break;
 		}
 		
 		c.init();
@@ -38,12 +38,13 @@ public class CreatureFactory {
 	}
 	
 	public static void replaceBlankWith(Creature b) {
-		int rand = new Random().nextInt(5);
+		int rand = new Random().nextInt(7);
 
 		Creature c = null;
 				
 		switch (rand) {
 		case 0:
+		case 5:
 			c = createOwl();
 			break;			
 		case 1:
@@ -54,6 +55,7 @@ public class CreatureFactory {
 			c = createPoints();
 			break;
 		case 4:
+		case 6:
 			c = createRabbit();
 			break;
 		}

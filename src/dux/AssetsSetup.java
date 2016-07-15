@@ -13,11 +13,11 @@ public class AssetsSetup {
 		}
 
 		for (int i = 0; i < 40; i++) {
-			CreatureFactory.initCreatures(7);
+			CreatureFactory.initCreatures(10);
 		}
 
 		for (int i = 40; i < 60; i++) {
-			CreatureFactory.initCreatures(6);
+			CreatureFactory.initCreatures(10);
 		}
 
 		// row 1
