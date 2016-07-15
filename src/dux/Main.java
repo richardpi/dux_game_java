@@ -17,35 +17,16 @@ import dux.creatures.*;
 import java.util.*;
 
 public class Main extends Applet implements Runnable, KeyListener {
-
-	public static LoaderTools loaderTools;
-	
-	public static boolean test = false;
-	public static boolean stop = false;
-	public static boolean playGame = false;
-	public static boolean gameOver = true;
-	public static boolean loadLevel = false;
-	public static boolean keyboardImage = true;
-	
-	public static int level = 1;
 	
 	private Image image;
 	private Graphics second;
-	
-	private static Image keyboard;
-
-	private static Gun gun;
-	public static ArrayList<Creature> creatures = new ArrayList<Creature>();
-
-	private static Sound sound;
-
 	private Font font;
-
-	private int time = 0;
 
 	@Override
 	public void init() {
 
+		new Assets(this);
+		
 		setSize(1024, 768);
 		setBackground(new Color(0, 0, 170));
 		setFocusable(true);
@@ -53,19 +34,6 @@ public class Main extends Applet implements Runnable, KeyListener {
 		frame.setTitle("Dux");
 
 		addKeyListener(this);
-
-		loaderTools = new LoaderTools();
-		loaderTools.setComponent(this);
-
-		sound = new Sound();
-		//Sound.music();
-
-		gun = new Gun();
-		gun.setGunPic(loaderTools.loadImage("data/gun2.png"));
-		Bullet.setPic(loaderTools.loadImage("data/bullet.png"));
-
-		keyboard = loaderTools.loadImage("data/keyboard.png");
-		
 		font = new Font("Digital-7", Font.PLAIN, 50);
 
 		try {
@@ -77,64 +45,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 			e.printStackTrace();
 		}
 
-		for (int i = 0; i < Bullet.INIT_BULLETS; i++) {
-			Bullet b = new Bullet();
-			b.setCenterX(Bullet.START_LEFT + Bullet.SPACING * i);
-			Bullet.bullets.add(b);
-		}
-
-		for (int i = 0; i < 40; i++) {
-			CreatureFactory.initCreatures(7);
-		}
-
-		for (int i = 40; i < 60; i++) {
-			CreatureFactory.initCreatures(6);
-		}
-
-		// row 1
-		int pos = 0;
-		for (int i = 0; i < 20; i++) {
-			pos++;
-			Creature c = (Creature) creatures.get(i);
-			c.setCenterX(Creature.START_LEFT + 55 * pos);
-		}
-
-		// row 2
-		pos = 0;
-		for (int i = 20; i < 40; i++) {
-			pos++;
-			Creature c = (Creature) creatures.get(i);
-			c.setCenterX(Creature.START_RIGHT - 55 * pos);
-			c.initRight();
-		}
-
-		// row 3
-		pos = 0;
-		for (int i = 40; i < 60; i++) {
-			pos++;
-			Creature c = (Creature) creatures.get(i);
-			c.setCenterX(Creature.START_LEFT + 55 * pos);
-			c.initRight();
-			c.initLeft();
-		}
-		
-		
-		///////////////
-		
-		java.util.Timer t = new java.util.Timer();
-		t.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				
-				System.out.println("gameover");
-				gameOver();
-				
-				t.cancel();
-				t.purge();
-			}
-		}, 10000, 1000);
-		
-		
+		Status.startScreen();		
 	}
 
 	@Override
@@ -150,36 +61,36 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		while (true) {
 
-			if (!stop) {
+			if (!Status.stop) {
 
-				if (playGame) {
-					gun.update();
+				if (Status.showCreatures) {
+					Assets.gun.update();
 
-					for (int i = 0; i < creatures.size(); i++) {
-						Creature c = (Creature) creatures.get(i);
+					for (int i = 0; i < Assets.creatures.size(); i++) {
+						Creature c = (Creature) Assets.creatures.get(i);
 
 						if (c.isRemove()) {
 							CreatureFactory.createReplacementBlank(c);
-							creatures.remove(i);
+							Assets.creatures.remove(i);
 						}
 
 						if (c instanceof Points) {
 							if (1 >= c.getRow()) {
 								CreatureFactory.createReplacementBlank(c);
-								creatures.remove(i);
+								Assets.creatures.remove(i);
 							}
 						}
 
 						if (5 <= checkNumberCreatures()) {
 							if (c.isReplace()) {
-								System.out.println("try replace");
+								//System.out.println("try replace");
 								c.setReplace(false);
 								int rand = new Random().nextInt(3);
 
 								if (2 == rand) {
-									System.out.println("replaced");
+									//System.out.println("replaced");
 									CreatureFactory.replaceBlankWith(c);
-									creatures.remove(i);
+									Assets.creatures.remove(i);
 								}
 							}						
 						}
@@ -187,7 +98,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 						c.update();
 					}
 
-					ArrayList projectiles = gun.getProjectiles();
+					ArrayList projectiles = Assets.gun.getProjectiles();
 					for (int i = 0; i < projectiles.size(); i++) {
 						Projectile p = (Projectile) projectiles.get(i);
 						if (p.isVisible() == true) {
@@ -196,6 +107,11 @@ public class Main extends Applet implements Runnable, KeyListener {
 							projectiles.remove(i);
 						}
 					}					
+				}
+				
+				
+				if (0 >= Bullet.bullets.size()) {
+					Status.gameOver();
 				}
 				
 			}
@@ -209,78 +125,18 @@ public class Main extends Applet implements Runnable, KeyListener {
 		}
 
 	}
-	
-	private void gameOver() {
-		stop = true;
-		playGame = true;
-		gameOver = true;
-		loadLevel = false;
-		keyboardImage = false;
-	}
-	
-	private void playGame() {
-
-		Sound.music();
 		
-		stop = false;
-		gameOver = false;
-		playGame = true;
-		loadLevel = false;
-		keyboardImage = false;
-		
-		java.util.Timer t1 = new java.util.Timer();
-		t1.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (!stop) {
-					time--;
-				}
-			}
-		}, 1, 300);
-		
-	}
-	
-	private void loadLevel() {
-		stop = false;
-		gameOver = false;
-		playGame = false;
-		loadLevel = true;
-		keyboardImage = false;
-		
-		time = 250;
-		Sound.start();
-
-		Thread waitToPlay = new Thread() {
-		    public void run() {
-				boolean wait = true;
-
-				while (wait) {
-					
-					if (Sound.startClip.getMicrosecondLength() <= Sound.startClip.getMicrosecondPosition()) {
-						wait = false;
-						playGame();
-					}
-					
-				}
-		    }  
-		};
-
-		waitToPlay.start();
-	}
-	
 	private int checkNumberCreatures() {
 		int number = 0;
 		
-		for (int i = 0; i < creatures.size(); i++) {
-			Creature c = (Creature) creatures.get(i);
+		for (int i = 0; i < Assets.creatures.size(); i++) {
+			Creature c = (Creature) Assets.creatures.get(i);
 			
 			if (false == c instanceof Blank) {
 				number++;
 			}
 		}
 		
-		//System.out.println(number);
 		return number;
 	}
 
@@ -307,7 +163,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		g.fillRect(25, 25, 974, 2);
 		g.drawString("SCORE  " + String.format("%06d", Creature.points), 25, 70);
-		g.drawString("TIME  " + String.format("%03d", time), 425, 70);
+		g.drawString("TIME  " + String.format("%03d", Timer.time), 425, 70);
 		g.drawString("HIGHS  " + String.format("%06d", 0), 725, 70);
 		g.fillRect(25, 80, 974, 2);
 
@@ -318,45 +174,48 @@ public class Main extends Applet implements Runnable, KeyListener {
 			g.drawImage(Bullet.getPic(), b.getCenterX(), b.getCenterY(), this);
 		}
 		
-		if (loadLevel) {
+		if (Status.loadLevelLabel) {
 			g.fillRect(430, 280, 173, 2);
-			g.drawString("LEVEL " + String.format("%02d", level), 435, 325);
+			g.drawString("LEVEL " + String.format("%02d", Status.level), 435, 325);
 			g.fillRect(430, 336, 173, 2);			
 		}
 		
-		if (gameOver) {
-			g.fillRect(400, 280, 230, 2);
-			g.drawString("GAME  OVER", 405, 325);
-			g.fillRect(400, 336, 230, 2);			
-		}
-		
-		if (keyboardImage) {
-			g.drawImage(keyboard, 695, 630, this);
+		if (Status.keyboardImage) {
+			g.drawImage(Assets.keyboard, 695, 630, this);
 		}
 		
 		
-		if (playGame) {
+		if (Status.showCreatures) {
 			
-			g.drawImage(gun.getGunPic(), gun.getCenterX() - 10, gun.getCenterY() - 100, this);
+			g.drawImage(Assets.gun.getGunPic(), Assets.gun.getCenterX() - 10, Assets.gun.getCenterY() - 100, this);
 			
-			for (int i = 0; i < creatures.size(); i++) {
-				Creature c = (Creature) creatures.get(i);
+			for (int i = 0; i < Assets.creatures.size(); i++) {
+				Creature c = (Creature) Assets.creatures.get(i);
 				g.drawImage(c.getPic(), (int) c.getCenterX(), c.getCenterY(), this);
 			}
 
-			ArrayList projectiles = gun.getProjectiles();
+			ArrayList projectiles = Assets.gun.getProjectiles();
 			for (int i = 0; i < projectiles.size(); i++) {
 				Projectile p = (Projectile) projectiles.get(i);
 				g.setColor(new Color(238, 238, 238));
 				g.fillRect(p.getX(), p.getY(), 3, 60);
 			}
 
-			if (test) {
-				for (int i = 0; i < creatures.size(); i++) {
-					Creature c = (Creature) creatures.get(i);
+			if (Status.test) {
+				for (int i = 0; i < Assets.creatures.size(); i++) {
+					Creature c = (Creature) Assets.creatures.get(i);
 					g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
 				}
 			}			
+		}
+		
+		if (Status.gameOverLabel) {
+			g.setColor(new Color(0, 0, 170));
+			g.fillRect(400, 260, 230, 76);
+			g.setColor(new Color(238, 238, 238));
+			g.fillRect(400, 280, 230, 2);
+			g.drawString("GAME  OVER", 405, 325);			
+			g.fillRect(400, 336, 230, 2);
 		}
 
 	}
@@ -380,61 +239,57 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-				
-		if (!stop) {
-			
-			if (playGame) {
-				switch (e.getKeyCode()) {
-				case KeyEvent.VK_LEFT:
-					gun.moveLeft();
-					gun.setMovingLeft(true);
-					gun.setMovingRight(false);
-					break;
 
-				case KeyEvent.VK_RIGHT:
-					gun.moveRight();
-					gun.setMovingLeft(false);
-					gun.setMovingRight(true);
-					break;
+		if (!Status.stop && Status.showCreatures) {
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_LEFT:
+				Assets.gun.moveLeft();
+				Assets.gun.setMovingLeft(true);
+				Assets.gun.setMovingRight(false);
+				break;
 
-				case KeyEvent.VK_SPACE:
-					if (gun.isReadyToFire()) {
-						gun.shoot();
-						gun.setReadyToFire(false);
-					}
-					break;
-				}				
-			}
-		
+			case KeyEvent.VK_RIGHT:
+				Assets.gun.moveRight();
+				Assets.gun.setMovingLeft(false);
+				Assets.gun.setMovingRight(true);
+				break;
+
+			case KeyEvent.VK_SPACE:
+				if (Assets.gun.isReadyToFire()) {
+					Assets.gun.shoot();
+					Assets.gun.setReadyToFire(false);
+				}
+				break;
+			}	
 		}
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-
-		if (gameOver) {
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				loadLevel();
-			}
-		}
 		
-		if (!stop) {
+		if (Status.readyToPlay) {
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				Status.loadLevel();
+			}
+		} else if (Status.gameOver && Status.reset) {
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				Status.startScreen();
+			}
+		} else if (!Status.stop && Status.showCreatures) {
 			
-			if (playGame) {
-				switch (e.getKeyCode()) {
-				case KeyEvent.VK_LEFT:
-					gun.stopLeft();
-					break;
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_LEFT:
+				Assets.gun.stopLeft();
+				break;
 
-				case KeyEvent.VK_RIGHT:
-					gun.stopRight();
-					break;
+			case KeyEvent.VK_RIGHT:
+				Assets.gun.stopRight();
+				break;
 
-				case KeyEvent.VK_SPACE:
-					gun.setReadyToFire(true);
-					break;
-				}				
+			case KeyEvent.VK_SPACE:
+				Assets.gun.setReadyToFire(true);
+				break;
 			}
 
 		}

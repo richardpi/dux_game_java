@@ -40,6 +40,7 @@ public class Bullet {
 		}
 	}
 
+	//bullets removed after duck reaches end
 	public static void bulletsRemove() {
 		
 		java.util.Timer t = new java.util.Timer();
@@ -54,7 +55,7 @@ public class Bullet {
 		            	
 		            	//System.out.println(bulletCounter);
 		                if (5 <= bulletCounter) {
-		                	Main.stop = false;
+		                	Status.stop = false;
 		                	bulletCounter = 0;
 		                    t.cancel();
 		                    t.purge();

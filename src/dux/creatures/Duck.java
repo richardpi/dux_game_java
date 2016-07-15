@@ -13,7 +13,7 @@ public class Duck extends Creature {
 		if (!bulletsRemoved) {
 			bulletsRemoved = true;
 			setRemove(true);
-			Main.stop = true;
+			Status.stop = true;
 			Bullet.bulletsRemove();			
 		}
 

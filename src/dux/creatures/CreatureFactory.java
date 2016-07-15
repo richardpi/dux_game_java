@@ -34,7 +34,7 @@ public class CreatureFactory {
 		}
 		
 		c.init();
-		Main.creatures.add(c);
+		Assets.creatures.add(c);
 	}
 	
 	public static void replaceBlankWith(Creature b) {
@@ -60,7 +60,7 @@ public class CreatureFactory {
 		
 		c.init();
 		
-		Main.creatures.add(c);
+		Assets.creatures.add(c);
 	}
 
 	public static Duck createDuck() {
@@ -81,8 +81,8 @@ public class CreatureFactory {
 	
 	public static Points createPoints() {
 		Points c = new Points();
-		Image imageRight = Main.loaderTools.loadImage("data/points10.png");
-		Image imageLeft = Main.loaderTools.loadImage("data/points5.png");
+		Image imageRight = Assets.loaderTools.loadImage("data/points10.png");
+		Image imageLeft = Assets.loaderTools.loadImage("data/points5.png");
 		c.setRightPic(imageRight);
 		c.setLeftPic(imageLeft);
 
@@ -90,7 +90,7 @@ public class CreatureFactory {
 	}
 
 	public static Creature createCreature(String image, Creature c) {
-		Image imageRight = Main.loaderTools.loadImage(image);
+		Image imageRight = Assets.loaderTools.loadImage(image);
 		Image imageLeft = ImageTools.flipImage(imageRight);
 		c.setRightPic(imageRight);
 		c.setLeftPic(imageLeft);
@@ -104,7 +104,7 @@ public class CreatureFactory {
 		blank.setCenterY(c.getCenterY());
 		blank.setRow(c.getRow());
 		blank.determineSpeedDirection();
-		Main.creatures.add(blank);
+		Assets.creatures.add(blank);
 	}
 
 }

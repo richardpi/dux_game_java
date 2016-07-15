@@ -36,7 +36,7 @@ public class Projectile {
 	
 	private void checkCollision() {
 		
-		ArrayList creatures = Main.creatures;
+		ArrayList creatures = Assets.creatures;
 		for (int i = 0; i < creatures.size(); i++) {
 			Creature c = (Creature) creatures.get(i);
 			
