@@ -18,6 +18,7 @@ public class Sound {
 	private static Clip bulletRemoveClip;
 	public static Clip startClip;
 	public static Clip gameOverClip;
+	public static Clip completedClip;
 	
 	public Sound() {
 				
@@ -26,6 +27,7 @@ public class Sound {
 		bulletRemoveClip = prepareClip("data/bulletRemove.wav");
 		startClip = prepareClip("data/start.wav");
 		gameOverClip = prepareClip("data/end.wav");
+		completedClip = prepareClip("data/count.wav");
 		
 		//stuff to mp3 player
 		Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
@@ -48,6 +50,11 @@ public class Sound {
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	public static void completed() {
+		completedClip.setFramePosition(0);  // Must always rewind!
+		completedClip.start();		
 	}
 
 	public static void gameOver() {

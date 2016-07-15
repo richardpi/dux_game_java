@@ -5,6 +5,10 @@ import dux.creatures.CreatureFactory;
 
 public class AssetsSetup {
 
+	private static int ROW1 = 2;
+	private static int ROW2 = 4;
+	private static int ROW3 = 6;
+	
 	public static void setup() {
 		for (int i = 0; i < Bullet.INIT_BULLETS; i++) {
 			Bullet b = new Bullet();
@@ -12,17 +16,21 @@ public class AssetsSetup {
 			Bullet.bullets.add(b);
 		}
 
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < ROW1; i++) {
 			CreatureFactory.initCreatures(10);
 		}
 
-		for (int i = 40; i < 60; i++) {
+		for (int i = ROW1; i < ROW2; i++) {
+			CreatureFactory.initCreatures(10);
+		}		
+		
+		for (int i = ROW2; i < ROW3; i++) {
 			CreatureFactory.initCreatures(10);
 		}
 
 		// row 1
 		int pos = 0;
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < ROW1; i++) {
 			pos++;
 			Creature c = (Creature) Assets.creatures.get(i);
 			c.setCenterX(Creature.START_LEFT + 55 * pos);
@@ -30,7 +38,7 @@ public class AssetsSetup {
 
 		// row 2
 		pos = 0;
-		for (int i = 20; i < 40; i++) {
+		for (int i = ROW1; i < ROW2; i++) {
 			pos++;
 			Creature c = (Creature) Assets.creatures.get(i);
 			c.setCenterX(Creature.START_RIGHT - 55 * pos);
@@ -39,7 +47,7 @@ public class AssetsSetup {
 
 		// row 3
 		pos = 0;
-		for (int i = 40; i < 60; i++) {
+		for (int i = ROW2; i < ROW3; i++) {
 			pos++;
 			Creature c = (Creature) Assets.creatures.get(i);
 			c.setCenterX(Creature.START_LEFT + 55 * pos);

@@ -33,6 +33,19 @@ public class Status {
 		reset = false;
 	}
 	
+	public static void completedLevel() {
+		stop = true;
+		showCreatures = true;
+		gameOverLabel = false;
+		gameOver = false;
+		loadLevelLabel = false;
+		keyboardImage = false;
+		readyToPlay = false;
+		reset = false;
+		
+		Sound.completed();
+	}
+	
 	public static void gameOver() {
 		stop = true;
 		showCreatures = true;

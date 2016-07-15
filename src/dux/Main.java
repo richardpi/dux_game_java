@@ -109,6 +109,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 					}					
 				}
 				
+				if (0 >= checkNumberCreatures()) {
+					Status.completedLevel();
+				}
 				
 				if (0 >= Bullet.bullets.size()) {
 					Status.gameOver();
