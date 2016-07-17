@@ -8,48 +8,33 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.media.format.AudioFormat;
-import javax.media.*;
 
 public class Sound {
+
+	public static Clip startClip;
 	
+	private static Clip gameOverClip;
+	private static Clip completedClip;
+	private static Clip mainClip;
 	private static Clip shootClip;
 	private static Clip hitClip;
 	private static Clip bulletRemoveClip;
-	public static Clip startClip;
-	public static Clip gameOverClip;
-	public static Clip completedClip;
-	
+
 	public Sound() {
-				
+		mainClip = prepareClip("data/main5.wav");
 		shootClip = prepareClip("data/shoot.wav");
 		hitClip = prepareClip("data/hit.wav");
 		bulletRemoveClip = prepareClip("data/bulletRemove.wav");
 		startClip = prepareClip("data/start.wav");
 		gameOverClip = prepareClip("data/end.wav");
 		completedClip = prepareClip("data/count.wav");
-		
-		//stuff to mp3 player
-		Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
-		Format input2 = new AudioFormat(AudioFormat.MPEG);
-		Format output = new AudioFormat(AudioFormat.LINEAR);
-		PlugInManager.addPlugIn(
-			"com.sun.media.codec.audio.mp3.JavaDecoder",
-			new Format[]{input1, input2},
-			new Format[]{output},
-			PlugInManager.CODEC
-		);
 
 	}
 	
 	public static void music() {
-		try {
-			Player player = Manager.createPlayer(new MediaLocator(new File("data/main.mp3").toURI().toURL()));
-			//player.start();
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-		}
+		mainClip.setFramePosition(0);  // Must always rewind!
+		mainClip.start();
+		mainClip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
 	public static void completed() {

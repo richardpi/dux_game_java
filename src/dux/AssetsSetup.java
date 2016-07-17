@@ -5,9 +5,9 @@ import dux.creatures.CreatureFactory;
 
 public class AssetsSetup {
 
-	private static int ROW1 = 2;
-	private static int ROW2 = 4;
-	private static int ROW3 = 6;
+	private static int ROW1 = 20;
+	private static int ROW2 = 40;
+	private static int ROW3 = 60;
 	
 	public static void setup() {
 		for (int i = 0; i < Bullet.INIT_BULLETS; i++) {

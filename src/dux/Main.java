@@ -110,7 +110,27 @@ public class Main extends Applet implements Runnable, KeyListener {
 				}
 				
 				if (0 >= checkNumberCreatures()) {
+					
+					Gun.projectiles.clear();
 					Status.completedLevel();
+					Bullet.bulletsCountPoints();
+										
+					Thread waitToCountTime = new Thread() {
+					    public void run() {
+							while (!Bullet.countHelper) {
+								try {
+									Thread.sleep(10);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							
+							Timer.timeCountPoints();					    	
+					    }  
+					};
+
+					waitToCountTime.start();					
 				}
 				
 				if (0 >= Bullet.bullets.size()) {

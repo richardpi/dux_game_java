@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Gun {
 
-	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	public static ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 	private Image gunPic;
 	

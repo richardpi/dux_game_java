@@ -2,6 +2,8 @@ package dux;
 
 import java.util.*;
 
+import dux.creatures.Creature;
+
 public class Timer {
 
 	public static int INIT_TIME = 250;
@@ -35,5 +37,28 @@ public class Timer {
 	public static void purge() {
 		t.cancel();
 		t.purge();		
+	}
+	
+	public static void timeCountPoints() {
+		
+		time = time - (time % 10);
+		
+		java.util.Timer t = new java.util.Timer();
+		t.schedule(new TimerTask() {
+
+		            @Override
+		            public void run() {
+
+		            	time -= 10;
+		            	Creature.points += 100;
+		            	
+		                if (0 >= time) {
+		                	time = 0;
+		                    t.cancel();
+		                    t.purge();
+		                }
+		                
+		            }
+		        }, 1, 20);		
 	}
 }
