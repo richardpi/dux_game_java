@@ -2,6 +2,8 @@ package dux;
 
 import java.util.TimerTask;
 
+import dux.creatures.Creature;
+
 public class Status {
 
 	public static boolean test = false;
@@ -15,13 +17,14 @@ public class Status {
 	public static boolean readyToPlay = false;
 	public static boolean reset = false;
 	
-	public static int level = 1;	
+	public static int points = 0;
+	
+	public static int level = 1;
+	public static int highscore = 0;
 	
 	public static void startScreen() {
-		Assets.creatures.clear();
-		Bullet.bullets.clear();
-		AssetsSetup.setup();
-		Timer.applyInitTime();
+		reset();
+		points = 0;
 		
 		stop = true;
 		showCreatures = false;
@@ -43,7 +46,10 @@ public class Status {
 		readyToPlay = false;
 		reset = false;
 		
+		Gun.projectiles.clear();
+		Sound.musicStop();
 		Sound.completed();
+		Timer.purge();
 	}
 	
 	public static void gameOver() {
@@ -56,7 +62,15 @@ public class Status {
 		readyToPlay = false;
 		reset = false;
 		
-		Timer.purge();
+		if (points > highscore) {
+			highscore = points;
+		}
+		
+		Status.level = 1;
+		Creature.MOVESPEED = Creature.INIT_MOVESPEED;
+		Gun.projectiles.clear();
+		
+		Timer.purge();		
 		
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
@@ -69,6 +83,7 @@ public class Status {
 			}
 		}, 2500, 1);
 		
+		Sound.musicStop();
 		Sound.gameOver();
 	}
 	
@@ -114,6 +129,13 @@ public class Status {
 		};
 
 		waitToPlay.start();
+	}
+	
+	public static void reset() {
+		Assets.creatures.clear();
+		Bullet.bullets.clear();
+		AssetsSetup.setup();
+		Timer.applyInitTime();
 	}
 
 }

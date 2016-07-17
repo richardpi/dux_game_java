@@ -36,6 +36,10 @@ public class Sound {
 		mainClip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
+	public static void musicStop() {
+		mainClip.stop();
+	}
+	
 	public static void completed() {
 		completedClip.setFramePosition(0);  // Must always rewind!
 		completedClip.start();		

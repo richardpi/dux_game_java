@@ -82,7 +82,7 @@ public class Bullet {
 		            public void run() {
 
 		            	Bullet.remove();
-		            	Creature.points += 100;
+		            	Status.points += 100;
 		            	
 		                if (0 >= bullets.size()) {
 		                    t.cancel();

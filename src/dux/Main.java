@@ -110,8 +110,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 				}
 				
 				if (0 >= checkNumberCreatures()) {
-					
-					Gun.projectiles.clear();
+										
 					Status.completedLevel();
 					Bullet.bulletsCountPoints();
 										
@@ -130,7 +129,27 @@ public class Main extends Applet implements Runnable, KeyListener {
 					    }  
 					};
 
-					waitToCountTime.start();					
+					waitToCountTime.start();
+					
+					///
+					
+					Thread waitToCountFinish = new Thread() {
+					    public void run() {
+							while (Timer.time > 0) {
+								try {
+									Thread.sleep(10);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							
+							startNextLevel();					    	
+					    }  
+					};
+
+					waitToCountFinish.start();					
+
 				}
 				
 				if (0 >= Bullet.bullets.size()) {
@@ -149,6 +168,23 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 	}
 		
+	public void startNextLevel() {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Status.level += 1;
+		Creature.MOVESPEED += Creature.INCREASE_MOVESPEED;
+		
+		Status.reset();
+		Status.loadLevel();
+		
+		System.out.println("next level");
+	}
+	
 	private int checkNumberCreatures() {
 		int number = 0;
 		
@@ -185,9 +221,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 		g.setColor(new Color(238, 238, 238));
 
 		g.fillRect(25, 25, 974, 2);
-		g.drawString("SCORE  " + String.format("%06d", Creature.points), 25, 70);
+		g.drawString("SCORE  " + String.format("%06d", Status.points), 25, 70);
 		g.drawString("TIME  " + String.format("%03d", Timer.time), 425, 70);
-		g.drawString("HIGHS  " + String.format("%06d", 0), 725, 70);
+		g.drawString("HIGHS  " + String.format("%06d", Status.highscore), 725, 70);
 		g.fillRect(25, 80, 974, 2);
 
 		g.fillRect(25, 720, 974, 2);
@@ -198,9 +234,9 @@ public class Main extends Applet implements Runnable, KeyListener {
 		}
 		
 		if (Status.loadLevelLabel) {
-			g.fillRect(430, 280, 173, 2);
+			g.fillRect(430, 280, 183, 2);
 			g.drawString("LEVEL " + String.format("%02d", Status.level), 435, 325);
-			g.fillRect(430, 336, 173, 2);			
+			g.fillRect(430, 336, 183, 2);			
 		}
 		
 		if (Status.keyboardImage) {

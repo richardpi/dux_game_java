@@ -3,6 +3,8 @@ package dux.creatures;
 import java.awt.Image;
 import java.awt.Rectangle;
 
+import dux.*;
+
 public abstract class Creature {
 
 	private static int margins = 40;
@@ -12,8 +14,6 @@ public abstract class Creature {
 	final public static int START_LEFT = -margins;
 	final public static int START_TOP = 170;
 	
-	public static int points = 0;	
-	
 	public Rectangle rect = new Rectangle(0, 0, 0, 0);
 	
 	protected Image pic;
@@ -21,7 +21,10 @@ public abstract class Creature {
 	protected Image leftPic;
 	protected Image rightPic;	
 	
-	final double MOVESPEED = 0.6;
+	public static double INIT_MOVESPEED = 0.6;
+	public static double INCREASE_MOVESPEED = 0.2;
+	public static double MOVESPEED = 0.6;
+	
 	final int OFFSET_Y = 100;
 	
 	final int DIRECTION_LEFT = -1;
@@ -165,7 +168,7 @@ public abstract class Creature {
 	}
 	
 	public static void addPoints(int multiplier) {
-		points += ADD_POINTS * multiplier;
+		Status.points += ADD_POINTS * multiplier;
 	}
 
 	public int getLives() {

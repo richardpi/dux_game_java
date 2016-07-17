@@ -50,7 +50,7 @@ public class Timer {
 		            public void run() {
 
 		            	time -= 10;
-		            	Creature.points += 100;
+		            	Status.points += 100;
 		            	
 		                if (0 >= time) {
 		                	time = 0;
@@ -59,6 +59,6 @@ public class Timer {
 		                }
 		                
 		            }
-		        }, 1, 20);		
+		        }, 1, 20);
 	}
 }
