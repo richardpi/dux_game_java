@@ -1,14 +1,25 @@
 package dux;
 
-import dux.creatures.Creature;
+import dux.creatures.*;
 
 public class AssetsSetup {
 
-	private static int ROW1 = 20;
-	private static int ROW2 = 40;
-	private static int ROW3 = 60;
+	private static int ROW1;
+	private static int ROW2;
+	private static int ROW3;
 	
 	public static void setup() {
+		
+		if (Status.testMinimal) {
+			ROW1 = 2;
+			ROW2 = 4;
+			ROW3 = 6;		
+		} else {
+			ROW1 = 20;
+			ROW2 = 40;
+			ROW3 = 60;
+		}		
+		
 		for (int i = 0; i < Bullet.INIT_BULLETS; i++) {
 			Bullet b = new Bullet();
 			b.setCenterX(Bullet.START_LEFT + Bullet.SPACING * i);

@@ -132,7 +132,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 					waitToCountTime.start();
 					
 					///
-					
+
 					Thread waitToCountFinish = new Thread() {
 					    public void run() {
 							while (Timer.time > 0) {
@@ -170,7 +170,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 		
 	public void startNextLevel() {
 		try {
-			Thread.sleep(500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -12,9 +12,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class Sound {
 
 	public static Clip startClip;
+	public static Clip completedClip;
 	
-	private static Clip gameOverClip;
-	private static Clip completedClip;
+	private static Clip gameOverClip;	
 	private static Clip mainClip;
 	private static Clip shootClip;
 	private static Clip hitClip;

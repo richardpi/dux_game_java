@@ -10,7 +10,7 @@ public class Bullet {
 
 	public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	
-	public static int INIT_BULLETS = 80;
+	public static int INIT_BULLETS;
 	public static int START_LEFT = 33;
 	public static int SPACING = 12;
 
@@ -23,6 +23,14 @@ public class Bullet {
 	private int centerX;
 	private int centerY = 731;
 
+	public static void init() {
+		if (Status.testMinimal) {
+			INIT_BULLETS = 10;
+		} else {
+			INIT_BULLETS = 80;		
+		}
+	}
+	
 	public static void remove() {
 		bullets.remove(bullets.size() - 1);
 	}

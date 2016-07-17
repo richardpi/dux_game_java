@@ -7,6 +7,7 @@ import dux.creatures.Creature;
 public class Status {
 
 	public static boolean test = false;
+	public static boolean testMinimal = false;
 
 	public static boolean stop = false;
 	public static boolean showCreatures = false;
@@ -23,6 +24,7 @@ public class Status {
 	public static int highscore = 0;
 	
 	public static void startScreen() {
+		Bullet.init();
 		reset();
 		points = 0;
 		
