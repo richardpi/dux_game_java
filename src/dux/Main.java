@@ -38,7 +38,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		try {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/digital-7.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/fonts/digital-7.ttf")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (FontFormatException e) {

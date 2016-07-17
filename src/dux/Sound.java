@@ -21,14 +21,13 @@ public class Sound {
 	private static Clip bulletRemoveClip;
 
 	public Sound() {
-		mainClip = prepareClip("data/main5.wav");
-		shootClip = prepareClip("data/shoot.wav");
-		hitClip = prepareClip("data/hit.wav");
-		bulletRemoveClip = prepareClip("data/bulletRemove.wav");
-		startClip = prepareClip("data/start.wav");
-		gameOverClip = prepareClip("data/end.wav");
-		completedClip = prepareClip("data/count.wav");
-
+		mainClip = prepareClip("data/sfx/main.wav");
+		shootClip = prepareClip("data/sfx/shoot.wav");
+		hitClip = prepareClip("data/sfx/hit.wav");
+		bulletRemoveClip = prepareClip("data/sfx/bulletRemove.wav");
+		startClip = prepareClip("data/sfx/start.wav");
+		gameOverClip = prepareClip("data/sfx/end.wav");
+		completedClip = prepareClip("data/sfx/count.wav");
 	}
 	
 	public static void music() {

@@ -1,7 +1,6 @@
 package dux;
 
 import dux.creatures.Creature;
-import dux.creatures.CreatureFactory;
 
 public class AssetsSetup {
 
