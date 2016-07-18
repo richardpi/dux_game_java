@@ -57,7 +57,9 @@ public class Bullet {
 		
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
-
+			
+			int bulletsToRemove = bulletsMaxRemoveDuck();
+			
 		            @Override
 		            public void run() {
 
@@ -66,7 +68,7 @@ public class Bullet {
 		            	Sound.bulletRemove();
 		            	
 		            	//System.out.println(bulletCounter);
-		                if (5 <= bulletCounter) {
+		                if (bulletsToRemove <= bulletCounter) {
 		                	Status.stop = false;
 		                	bulletCounter = 0;
 		                    t.cancel();
@@ -76,6 +78,16 @@ public class Bullet {
 		            }
 		        }, 1, 300);
 
+	}
+
+	private static int bulletsMaxRemoveDuck() {
+		int bulletsToRemove = 5;
+		
+		if (5 > Bullet.bullets.size()) {
+			bulletsToRemove = Bullet.bullets.size();
+		}
+		
+		return bulletsToRemove;
 	}
 	
 	//when level finished, add points for each bullet

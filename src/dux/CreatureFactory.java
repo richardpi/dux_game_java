@@ -3,13 +3,7 @@ package dux;
 import java.awt.Image;
 import java.util.Random;
 
-import dux.*;
-import dux.creatures.Blank;
-import dux.creatures.Creature;
-import dux.creatures.Duck;
-import dux.creatures.Owl;
-import dux.creatures.Points;
-import dux.creatures.Rabbit;
+import dux.creatures.*;
 
 public class CreatureFactory {
 
