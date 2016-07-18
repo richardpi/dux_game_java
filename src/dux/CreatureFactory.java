@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.Random;
 
 import dux.creatures.*;
+import dux.utils.ImageTools;
 
 public class CreatureFactory {
 
@@ -11,7 +12,7 @@ public class CreatureFactory {
 		int rand = new Random().nextInt(r);
 
 		Creature c = null;
-		
+
 		switch (rand) {
 		case 0:
 		case 2:
@@ -32,21 +33,21 @@ public class CreatureFactory {
 			c = createPoints();
 			break;
 		}
-		
+
 		c.init();
 		Assets.creatures.add(c);
 	}
-	
+
 	public static void replaceBlankWith(Creature b) {
 		int rand = new Random().nextInt(7);
 
 		Creature c = null;
-				
+
 		switch (rand) {
 		case 0:
 		case 5:
 			c = createOwl();
-			break;			
+			break;
 		case 1:
 		case 3:
 			c = createDuck();
@@ -59,9 +60,9 @@ public class CreatureFactory {
 			c = createRabbit();
 			break;
 		}
-		
+
 		c.init();
-		
+
 		Assets.creatures.add(c);
 	}
 
@@ -76,11 +77,11 @@ public class CreatureFactory {
 	public static Rabbit createRabbit() {
 		return (Rabbit) createCreature("data/graphics/rabbit.png", new Rabbit());
 	}
-	
+
 	public static Blank createBlank() {
-		return new Blank();		
+		return new Blank();
 	}
-	
+
 	public static Points createPoints() {
 		Points c = new Points();
 		Image imageRight = Assets.loaderTools.loadImage("data/graphics/points10.png");
@@ -96,10 +97,10 @@ public class CreatureFactory {
 		Image imageLeft = ImageTools.flipImage(imageRight);
 		c.setRightPic(imageRight);
 		c.setLeftPic(imageLeft);
-		
+
 		return c;
 	}
-	
+
 	public static void createReplacementBlank(Creature c) {
 		Blank blank = new Blank();
 		blank.setCenterX(c.getCenterX());

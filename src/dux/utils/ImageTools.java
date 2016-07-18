@@ -1,4 +1,4 @@
-package dux;
+package dux.utils;
 
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
@@ -54,7 +54,7 @@ public class ImageTools {
 		Graphics bg = bi.getGraphics();
 		bg.drawImage(im, 0, 0, null);
 		bg.dispose();
-		
+
 		return bi;
 	}
 
@@ -72,7 +72,7 @@ public class ImageTools {
 				raster.setPixel(xx, yy, pixels);
 			}
 		}
-		
+
 		return image;
 	}
 }

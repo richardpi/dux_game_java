@@ -17,7 +17,7 @@ import dux.creatures.*;
 import java.util.*;
 
 public class Main extends Applet implements Runnable, KeyListener {
-	
+
 	private Image image;
 	private Graphics second;
 	private Font font;
@@ -26,7 +26,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 	public void init() {
 
 		new Assets(this);
-		
+
 		setSize(1024, 768);
 		setBackground(new Color(0, 0, 170));
 		setFocusable(true);
@@ -45,7 +45,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 			e.printStackTrace();
 		}
 
-		Status.startScreen();		
+		Status.startScreen();
 	}
 
 	@Override
@@ -83,16 +83,16 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 						if (5 <= checkNumberCreatures()) {
 							if (c.isReplace()) {
-								//System.out.println("try replace");
+								// System.out.println("try replace");
 								c.setReplace(false);
 								int rand = new Random().nextInt(3);
 
 								if (2 == rand) {
-									//System.out.println("replaced");
+									// System.out.println("replaced");
 									CreatureFactory.replaceBlankWith(c);
 									Assets.creatures.remove(i);
 								}
-							}						
+							}
 						}
 
 						c.update();
@@ -106,16 +106,16 @@ public class Main extends Applet implements Runnable, KeyListener {
 						} else {
 							projectiles.remove(i);
 						}
-					}					
+					}
 				}
-				
+
 				if (0 >= checkNumberCreatures()) {
-										
+
 					Status.completedLevel();
 					Bullet.bulletsCountPoints();
-										
+
 					Thread waitToCountTime = new Thread() {
-					    public void run() {
+						public void run() {
 							while (!Bullet.countHelper) {
 								try {
 									Thread.sleep(10);
@@ -124,17 +124,17 @@ public class Main extends Applet implements Runnable, KeyListener {
 									e.printStackTrace();
 								}
 							}
-							
-							Timer.timeCountPoints();					    	
-					    }  
+
+							Timer.timeCountPoints();
+						}
 					};
 
 					waitToCountTime.start();
-					
+
 					///
 
 					Thread waitToCountFinish = new Thread() {
-					    public void run() {
+						public void run() {
 							while (Timer.time > 0) {
 								try {
 									Thread.sleep(10);
@@ -143,19 +143,19 @@ public class Main extends Applet implements Runnable, KeyListener {
 									e.printStackTrace();
 								}
 							}
-							
-							startNextLevel();					    	
-					    }  
+
+							startNextLevel();
+						}
 					};
 
-					waitToCountFinish.start();					
+					waitToCountFinish.start();
 
 				}
-				
+
 				if (0 >= Bullet.bullets.size()) {
 					Status.gameOver();
 				}
-				
+
 			}
 
 			repaint();
@@ -167,7 +167,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 		}
 
 	}
-		
+
 	public void startNextLevel() {
 		try {
 			Thread.sleep(1000);
@@ -175,28 +175,14 @@ public class Main extends Applet implements Runnable, KeyListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Status.level += 1;
 		Creature.MOVESPEED += Creature.INCREASE_MOVESPEED;
-		
+
 		Status.reset();
 		Status.loadLevel();
-		
+
 		System.out.println("next level");
-	}
-	
-	private int checkNumberCreatures() {
-		int number = 0;
-		
-		for (int i = 0; i < Assets.creatures.size(); i++) {
-			Creature c = (Creature) Assets.creatures.get(i);
-			
-			if (false == c instanceof Blank) {
-				number++;
-			}
-		}
-		
-		return number;
 	}
 
 	@Override
@@ -232,22 +218,21 @@ public class Main extends Applet implements Runnable, KeyListener {
 			Bullet b = (Bullet) Bullet.bullets.get(i);
 			g.drawImage(Bullet.getPic(), b.getCenterX(), b.getCenterY(), this);
 		}
-		
+
 		if (Status.loadLevelLabel) {
 			g.fillRect(430, 280, 183, 2);
 			g.drawString("LEVEL " + String.format("%02d", Status.level), 435, 325);
-			g.fillRect(430, 336, 183, 2);			
+			g.fillRect(430, 336, 183, 2);
 		}
-		
+
 		if (Status.keyboardImage) {
 			g.drawImage(Assets.keyboard, 695, 630, this);
 		}
-		
-		
+
 		if (Status.showCreatures) {
-			
+
 			g.drawImage(Assets.gun.getGunPic(), Assets.gun.getCenterX() - 10, Assets.gun.getCenterY() - 100, this);
-			
+
 			for (int i = 0; i < Assets.creatures.size(); i++) {
 				Creature c = (Creature) Assets.creatures.get(i);
 				g.drawImage(c.getPic(), (int) c.getCenterX(), c.getCenterY(), this);
@@ -263,17 +248,18 @@ public class Main extends Applet implements Runnable, KeyListener {
 			if (Status.test) {
 				for (int i = 0; i < Assets.creatures.size(); i++) {
 					Creature c = (Creature) Assets.creatures.get(i);
-					g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(), (int) c.rect.getHeight());
+					g.drawRect((int) c.rect.getX(), (int) c.rect.getY(), (int) c.rect.getWidth(),
+							(int) c.rect.getHeight());
 				}
-			}			
+			}
 		}
-		
+
 		if (Status.gameOverLabel) {
 			g.setColor(new Color(0, 0, 170));
 			g.fillRect(400, 260, 230, 76);
 			g.setColor(new Color(238, 238, 238));
 			g.fillRect(400, 280, 230, 2);
-			g.drawString("GAME  OVER", 405, 325);			
+			g.drawString("GAME  OVER", 405, 325);
 			g.fillRect(400, 336, 230, 2);
 		}
 
@@ -319,14 +305,14 @@ public class Main extends Applet implements Runnable, KeyListener {
 					Assets.gun.setReadyToFire(false);
 				}
 				break;
-			}	
+			}
 		}
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+
 		if (Status.readyToPlay) {
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				Status.loadLevel();
@@ -336,7 +322,7 @@ public class Main extends Applet implements Runnable, KeyListener {
 				Status.startScreen();
 			}
 		} else if (!Status.stop && Status.showCreatures) {
-			
+
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
 				Assets.gun.stopLeft();
@@ -353,6 +339,20 @@ public class Main extends Applet implements Runnable, KeyListener {
 
 		}
 
+	}
+
+	private int checkNumberCreatures() {
+		int number = 0;
+
+		for (int i = 0; i < Assets.creatures.size(); i++) {
+			Creature c = (Creature) Assets.creatures.get(i);
+
+			if (false == c instanceof Blank) {
+				number++;
+			}
+		}
+
+		return number;
 	}
 
 }

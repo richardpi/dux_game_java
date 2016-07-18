@@ -13,8 +13,8 @@ public class Sound {
 
 	public static Clip startClip;
 	public static Clip completedClip;
-	
-	private static Clip gameOverClip;	
+
+	private static Clip gameOverClip;
 	private static Clip mainClip;
 	private static Clip shootClip;
 	private static Clip hitClip;
@@ -29,80 +29,75 @@ public class Sound {
 		gameOverClip = prepareClip("data/sfx/end.wav");
 		completedClip = prepareClip("data/sfx/count.wav");
 	}
-	
+
 	public static void music() {
-		mainClip.setFramePosition(0);  // Must always rewind!
+		mainClip.setFramePosition(0); // Must always rewind!
 		mainClip.start();
 		mainClip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
-	
+
 	public static void musicStop() {
 		mainClip.stop();
 	}
-	
+
 	public static void completed() {
-		completedClip.setFramePosition(0);  // Must always rewind!
-		completedClip.start();		
+		completedClip.setFramePosition(0); // Must always rewind!
+		completedClip.start();
 	}
 
 	public static void gameOver() {
-		gameOverClip.setFramePosition(0);  // Must always rewind!
+		gameOverClip.setFramePosition(0); // Must always rewind!
 		gameOverClip.start();
 	}
-	
+
 	public static void start() {
-		startClip.setFramePosition(0);  // Must always rewind!
+		startClip.setFramePosition(0); // Must always rewind!
 		startClip.start();
-	}	
-	
+	}
+
 	public static void shoot() {
-        shootClip.setFramePosition(0);  // Must always rewind!
-        shootClip.start();
+		shootClip.setFramePosition(0); // Must always rewind!
+		shootClip.start();
 	}
-	
+
 	public static void hit() {
-        hitClip.setFramePosition(0);  // Must always rewind!
-        hitClip.start();
+		hitClip.setFramePosition(0); // Must always rewind!
+		hitClip.start();
 	}
-	
+
 	public static void bulletRemove() {
-		bulletRemoveClip.setFramePosition(0);  // Must always rewind!
-		bulletRemoveClip.start();		
+		bulletRemoveClip.setFramePosition(0); // Must always rewind!
+		bulletRemoveClip.start();
 	}
-	
+
 	private static Clip prepareClip(String filename) {
-		
+
 		Clip clip = null;
-		
-        try {
-            File file = new File(filename);
-            if (file.exists()) {
-                AudioInputStream sound = AudioSystem.getAudioInputStream(file);
-             // load the sound into memory (a Clip)
-                clip = AudioSystem.getClip();
-                clip.open(sound);
-            }
-            else {
-                throw new RuntimeException("Sound: file not found: " + filename);
-            }
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Sound: Malformed URL: " + e);
-        }
-        catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Sound: Unsupported Audio File: " + e);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Sound: Input/Output Error: " + e);
-        }
-        catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-        
-        return clip;
+
+		try {
+			File file = new File(filename);
+			if (file.exists()) {
+				AudioInputStream sound = AudioSystem.getAudioInputStream(file);
+				// load the sound into memory (a Clip)
+				clip = AudioSystem.getClip();
+				clip.open(sound);
+			} else {
+				throw new RuntimeException("Sound: file not found: " + filename);
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Sound: Malformed URL: " + e);
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Sound: Unsupported Audio File: " + e);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Sound: Input/Output Error: " + e);
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+
+		return clip;
 	}
 
 }

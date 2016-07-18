@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 
 import dux.creatures.Creature;
+import dux.utils.LoaderTools;
 
 public class Assets {
 
@@ -14,7 +15,7 @@ public class Assets {
 	public static Image keyboard;
 	public static Gun gun;
 	public static Sound sound;
-	
+
 	public Assets(Component comp) {
 		loaderTools = new LoaderTools();
 		loaderTools.setComponent(comp);

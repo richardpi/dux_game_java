@@ -1,4 +1,4 @@
-package dux;
+package dux.utils;
 
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -8,7 +8,7 @@ import java.awt.*;
 public class LoaderTools {
 
 	public Component comp;
-	
+
 	public Image loadImage(String path) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		MediaTracker tracker = new MediaTracker(comp);
@@ -24,6 +24,6 @@ public class LoaderTools {
 	}
 
 	public void setComponent(Component comp) {
-		this.comp = comp; 
+		this.comp = comp;
 	}
 }

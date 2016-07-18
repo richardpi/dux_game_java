@@ -17,17 +17,17 @@ public class Status {
 	public static boolean keyboardImage = false;
 	public static boolean readyToPlay = false;
 	public static boolean reset = false;
-	
+
 	public static int points = 0;
-	
+
 	public static int level = 1;
 	public static int highscore = 0;
-	
+
 	public static void startScreen() {
 		Bullet.init();
 		reset();
 		points = 0;
-		
+
 		stop = true;
 		showCreatures = false;
 		gameOverLabel = true;
@@ -37,7 +37,7 @@ public class Status {
 		readyToPlay = true;
 		reset = false;
 	}
-	
+
 	public static void completedLevel() {
 		stop = true;
 		showCreatures = true;
@@ -47,13 +47,13 @@ public class Status {
 		keyboardImage = false;
 		readyToPlay = false;
 		reset = false;
-		
+
 		Gun.projectiles.clear();
 		Sound.musicStop();
 		Sound.completed();
 		Timer.purge();
 	}
-	
+
 	public static void gameOver() {
 		stop = true;
 		showCreatures = true;
@@ -63,17 +63,17 @@ public class Status {
 		keyboardImage = false;
 		readyToPlay = false;
 		reset = false;
-		
+
 		if (points > highscore) {
 			highscore = points;
 		}
-		
+
 		Status.level = 1;
 		Creature.MOVESPEED = Creature.INIT_MOVESPEED;
 		Gun.projectiles.clear();
-		
-		Timer.purge();		
-		
+
+		Timer.purge();
+
 		java.util.Timer t = new java.util.Timer();
 		t.schedule(new TimerTask() {
 
@@ -81,14 +81,14 @@ public class Status {
 			public void run() {
 				reset = true;
 				t.cancel();
-				t.purge();					
+				t.purge();
 			}
 		}, 2500, 1);
-		
+
 		Sound.musicStop();
 		Sound.gameOver();
 	}
-	
+
 	public static void playGame() {
 		stop = false;
 		showCreatures = true;
@@ -98,7 +98,7 @@ public class Status {
 		keyboardImage = false;
 		readyToPlay = false;
 		reset = false;
-		
+
 		Sound.music();
 		Timer.start();
 	}
@@ -109,30 +109,30 @@ public class Status {
 		gameOverLabel = false;
 		gameOver = false;
 		loadLevelLabel = true;
-		keyboardImage = false;		
+		keyboardImage = false;
 		readyToPlay = false;
 		reset = false;
-		
+
 		Sound.start();
 
 		Thread waitToPlay = new Thread() {
-		    public void run() {
+			public void run() {
 				boolean wait = true;
 
 				while (wait) {
-					
+
 					if (Sound.startClip.getMicrosecondLength() <= Sound.startClip.getMicrosecondPosition()) {
 						wait = false;
 						playGame();
 					}
-					
+
 				}
-		    }  
+			}
 		};
 
 		waitToPlay.start();
 	}
-	
+
 	public static void reset() {
 		Assets.creatures.clear();
 		Bullet.bullets.clear();

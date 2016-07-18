@@ -7,19 +7,19 @@ public class AssetsSetup {
 	private static int ROW1;
 	private static int ROW2;
 	private static int ROW3;
-	
+
 	public static void setup() {
-		
+
 		if (Status.testMinimal) {
 			ROW1 = 2;
 			ROW2 = 4;
-			ROW3 = 6;		
+			ROW3 = 6;
 		} else {
 			ROW1 = 20;
 			ROW2 = 40;
 			ROW3 = 60;
-		}		
-		
+		}
+
 		for (int i = 0; i < Bullet.INIT_BULLETS; i++) {
 			Bullet b = new Bullet();
 			b.setCenterX(Bullet.START_LEFT + Bullet.SPACING * i);
@@ -32,8 +32,8 @@ public class AssetsSetup {
 
 		for (int i = ROW1; i < ROW2; i++) {
 			CreatureFactory.initCreatures(10);
-		}		
-		
+		}
+
 		for (int i = ROW2; i < ROW3; i++) {
 			CreatureFactory.initCreatures(10);
 		}

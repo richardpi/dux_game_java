@@ -9,7 +9,7 @@ public class Blank extends Creature {
 		if (Status.test) {
 			super.updateDefault();
 		}
-		
+
 	}
-	
+
 }
